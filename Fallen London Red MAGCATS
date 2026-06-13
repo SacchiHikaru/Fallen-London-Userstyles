@@ -2,8 +2,8 @@
 @name           Fallen London Red MAGCATS
 @namespace      fallenlondon.com
 @version        1.0.0
-@description    A new userstyle
-@author         Me
+@description    Changes all instances of the Neathbow Icons for the MAGCATS to instead use their Red icons, otherwise only used for their respective Studies.
+@author         Sacchi Hikaru
 ==/UserStyle== */
 
 @-moz-document url-prefix("https://www.fallenlondon.com/") {
