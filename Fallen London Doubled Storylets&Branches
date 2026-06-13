@@ -1,0 +1,47 @@
+/* Fallen London Doubled Storylets&Branches
+   by SacchiHikaru
+
+   @name Fallen London UI Tweaks
+   @namespace fallenlondon.com
+   @version 0.2 */
+
+/*This is the "make two storylets/choices appear in the same line" project, currently unsuccessful.*/
+
+@media (min-width:1900px){
+
+    .tab-content .storylet, .disclosure-wrapper .persistent{
+        max-width: 49.5%;
+        min-width: 49.5%;
+        margin-left: 1px;
+        margin-right: 1px;
+        display: inline-flex;
+        min-height: 220px;
+    }
+
+    .cards + .storylet_favourite{
+        float:none;
+        max-width: 100%;
+        min-width: 0%;
+        display:flex;
+        min-height: 0px;
+    }
+
+    .tab-content .media--branch{
+        max-width: 49.5%;
+        min-width: 49.5%;
+        display: inline-flex;
+        min-height: 220px;
+        margin-top: 3px;
+        margin-left: 1px;
+        margin-right: 1px;
+    }
+
+    .cards {
+        margin:auto;
+        width:47.8%; 
+    }
+
+    .col-primary{
+        max-width: 1450px;
+    }
+}
