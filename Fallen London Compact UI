@@ -1,0 +1,230 @@
+/* ==UserStyle==
+@name           Fallen London Compact UI
+@namespace      http://www.fallenlondon.com
+@version        1.3.1
+@description    A Fallen London userstyle that compacts the UI, particularly the sidebar.
+@author         Sacchi Hikaru
+==/UserStyle== */
+@-moz-document url-prefix("https://www.fallenlondon.com") {
+
+    /* This is one of the primary changes, making sure that the sidebars are large enough to accomodate doubled stats.*/
+    .col-secondary,
+    .col-tertiary {
+        max-width: 205px;
+        margin-top: 0px;
+        padding-top: 5px !important;
+    }
+
+
+    /* Disables the "Make Contacts" Snippet on the right sidebar.*/
+    .snippet,
+    .items--list .item__desc .button--secondary {
+        display: none;
+    }
+
+    /* Disables the "Enhanced your Subscription" text.*/
+    .enhanced-text--inverse {
+        display: none;
+    }
+
+    /* Increases the font size and bolds all sidebar numeric text for better visibility. */
+    .items .item__desc .item__value {
+        padding-top: 5px;
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    /* I'm not 100% sure what this one does but I think it's a vestige from when I couldn't figure out how to hide the text next to the fate button.*/
+    .item__desc p {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    /* Realigning the text on Echoes.*/
+    .item__value .item__price {
+        padding-top: 9px;
+    }
+
+    /* Reduces the margin on the sidebars, making them get closer to the central game screen. */
+    .col-primary {
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+    }
+
+    /* Makes sure all the sidebar items are neatly snug against each other and not leaving a ton of empty vertical space.*/
+    .items--list .item {
+        padding-top: 4px;
+        padding-bottom: 4px;
+        margin-top: 0px;
+    }
+
+    /* This makes the sidebar qualities stay side-by-side, greatly saving space.*/
+    .items--list .sidebar-quality {
+        max-width: 50%;
+        min-width: 50%;
+        float: left;
+    }
+
+    /* Hides all quality names and progress bars in the sidebars. */
+    .sidebar .item__desc .item__name,
+    .sidebar-quality .progress-bar {
+        display: none;
+    }
+
+    /* Casts Yeetus Deletus on the subscription text next to the fate button on the sidebar. Includes hiding the "time left to renew" text.*/
+    .sidebar__fate-button + .item__desc h3,
+    .sidebar__fate-button + .item__desc p {
+        display: none;
+    }
+
+    /* Realigns the value on the fate button. */
+    .sidebar__fate-button + .item__desc .item__value {
+        padding-top: 8px;
+    }
+
+    /* Makes images on the sidebars smaller, so they can better fit and take less space.*/
+    .sidebar-quality img {
+        width: 80%;
+        height: 80%;
+    }
+
+    /* Resizes the sidebar images for Echoes, actions and the fate button.*/
+    .icon--currency img {
+        width: 80%;
+        height: auto;
+    }
+
+    /* Realigns the text next to the Echoes a little bit.*/
+    .sidebar__echoes-button {
+        margin-right: -5px;
+    }
+
+    /* If you do not use this an ugly ass white bar will show up next to the fate button. I have been fighting this white bar for ages and this, combined with the transform a couple lines below, is the only solution I have found.*/
+    .sidebar__fate-button img {
+        width: 100%;
+        height: auto;
+    }
+
+    /* This ensures that the text for the bonuses on your qualities is also clearly visible. */
+    .sidebar-quality .item__desc {
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    /* Realigns the text on the sidebar qualities to the center. */
+    .sidebar-quality .item__desc {
+        margin: auto;
+    }
+
+    /* Realigns a lot of the remaining text. Will functionally not work without it. */
+    .col-secondary .items--list .icon,
+    .col-tertiary .items--list .icon {
+        margin-right: -4px
+    }
+
+    /* Makes the central gameplay storylets a little bit closer to each other.*/
+    .media {
+        margin-top: 10px;
+    }
+
+    /* The only fix I was able to find that makes the sidebar fate button smaller without the white bar. It does not look perfect but I have vanquished that white bar for good. */
+    .col-secondary .item .sidebar__fate-button {
+        transform: scale(0.85);
+        margin-left: -6px;
+        margin-top: -12px;
+    }
+
+    /* Makes the right sidebar closer to the travel button.*/
+    #right-sidebar {
+        margin-top: .5rem !important;
+    }
+    
+    /* Removes some unnecessary linebreaks on the right sidebar.*/    
+    .travel br{
+        display: none;
+    }
+
+    /* Disables all known sidebar ads. */
+    a[href="https://store.steampowered.com/bundle/36918/The_Fallen_London_Bundle/"],
+    a[href="https://www.kickstarter.com/projects/magpiegames/fallen-london-the-roleplaying-game"],
+    a[href="https://store.steampowered.com/app/1769980/Mask_of_the_Rose/"],
+    a[href="https://store.steampowered.com/app/3710210/Mandrake"],
+    a[href="https://store.steampowered.com/app/3710210/Mandrake?utm_source=FL-sidebar&utm_medium=RHS_ad&utm_campaign=mandrake%20wishlist&utm_content=hero_art"],
+    a[href="https://www.fallenlondon.com/"] {
+        display: none;
+    }
+
+    /* Hides Making Waves from the sidebar entirely, for those of us who are utterly done with Notability grinding and do not want to think about Making Waves anymore. This is option exists entirely out of spite. */
+    .col-secondary .items--list :has(img[src="//images.fallenlondon.com/icons/sidebarmakingwavessmall.png"]) {
+        display: none;
+    }
+    /* EXPERIMENTAL AND HIGHLY UNFINISHED
+
+Sets the sidebars to use enough space for four sidebar qualities instead of just two, to compensate for the excess of empty horizontal space on 1080p monitors. If you have suggestions on how to make this look better, please contact me on Discord at sacchihikaru (formerly Sacchi#5268). If necessary I can be found at the official Fallen London Discord.*/
+    /*@media (min-width: 1900px){
+    .col-secondary .items--list .item { max-width: 50%; min-width: 50%; float:left;}
+    .items--list .sidebar-quality{ max-width: 25% !important;  min-width: 25% !important; float:left !important;}
+    .col-secondary, .col-tertiary { max-width: 390px;}
+    .css-13ab8kc-container { max-width: 100%;}
+    .col-primary { max-width: 1080px; }
+}*/
+}
+@-moz-document url-prefix("https://www.fallenlondon.com/myself") {
+
+    /* On the "myself" page, makes me Mantelpiece/Scrapbook bar be next to the Cameo & Lodgings images.*/
+    .myself-profile__cameo-and-lodgings {
+        float: left;
+        margin-bottom: 3px;
+    }
+
+    /* These next three are just making sure the Cameo & Lodgings are as compact as possible on the myself page. */
+    .myself-profile__cameo-border {
+        margin-right: 3px;
+    }
+
+    .myself-profile__lodgings-container {
+        margin-left: 0px;
+    }
+
+    .myself-profile__lodgings-border {
+        margin-right: 0px;
+    }
+
+    /* These three lines change the text of the Journal and Profile buttons on the myself page to make sure they don't take two lines. */
+    .myself-profile__view-and-set-private .button--no-margin {
+        text-indent: -99999px;
+        line-height: 0px;
+    }
+
+    .myself-profile__view-and-set-private .button--no-margin::after {
+        content: "Journal";
+        text-indent: 0;
+        line-height: initial;
+        display: block;
+    }
+
+    .myself-profile__view-and-set-private a[href*="/profile/"]::after {
+        content: "Profile";
+        text-indent: 0;
+        line-height: initial;
+        display: block;
+    }
+
+    /* If you have the Change Face option below your cameo from using the Liber Visionis, this will move it closer to the cameo itself, saving some vertical space. */
+    .u-space-above.myself-profile__button--change-face {
+        margin-top: .1rem;
+    }
+
+    /* Reduces the margin from the bottom of the myself page's search bar.*/
+    .input--item-search {
+        margin-bottom: .1rem;
+    }
+
+    /* Reduces the padding from all of the qualities in the myself page. */
+    .quality-item {
+        padding-top: .1rem;
+        padding-bottom: .1rem;
+    }
+}
