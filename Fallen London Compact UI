@@ -1,19 +1,23 @@
 /* ==UserStyle==
 @name           Fallen London Compact UI
 @namespace      http://www.fallenlondon.com
-@version        1.3.3
+@version        1.4
 @description    A Fallen London userstyle that compacts the UI, particularly the sidebar.
 @author         Sacchi Hikaru
-==/UserStyle== */
+@preprocessor stylus
+
+@var checkbox wide-gamespace     "W I D E Gamespace (1080p+)" 0
+@var checkbox remove-mw "Remove Making Waves" 0
+
+==/UserStyle==*/
 @-moz-document url-prefix("https://www.fallenlondon.com") {
-    
+
     /* Shortens the margin to the left of the whole main game screen, making the main game column larger by pushing the left sidebar a little. It's a tiny change and should only affect 720p screens, not 1080p ones.*/
-    
-    .general-container__row{
+    .general-container__row {
         margin-left: .5rem;
     }
-    
-    
+
+
     /* This is one of the primary changes, making sure that the sidebars are large enough to accomodate doubled stats.*/
     .col-secondary,
     .col-tertiary {
@@ -147,36 +151,57 @@
     #right-sidebar {
         margin-top: .5rem !important;
     }
-    
-    /* Removes some unnecessary linebreaks on the right sidebar.*/    
-    .travel br{
+
+    /* Removes some unnecessary linebreaks on the right sidebar.*/
+    .travel br {
         display: none;
+    }
+    
+    /* The above removes unnecessary linebreaks. This one adds a very specific necessary one back.*/
+    .travel .heading--3 br {
+        display: initial !important;
     }
 
     /* Disables all known sidebar ads. */
-    a[href="https://store.steampowered.com/bundle/36918/The_Fallen_London_Bundle/"],
-    a[href="https://www.kickstarter.com/projects/magpiegames/fallen-london-the-roleplaying-game"],
-    a[href="https://store.steampowered.com/app/1769980/Mask_of_the_Rose/"],
-    a[href="https://store.steampowered.com/app/3710210/Mandrake"],
-    a[href="https://store.steampowered.com/app/3710210/Mandrake?utm_source=FL-sidebar&utm_medium=RHS_ad&utm_campaign=mandrake%20wishlist&utm_content=hero_art"],
-    a[href="https://www.fallenlondon.com/"] {
+    .col-tertiary .col-1-of-3 .travel br + a {
         display: none;
     }
 
     /* Hides Making Waves from the sidebar entirely, for those of us who are utterly done with Notability grinding and do not want to think about Making Waves anymore. This is option exists entirely out of spite. */
-    .col-secondary .items--list :has(img[src="//images.fallenlondon.com/icons/sidebarmakingwavessmall.png"]) {
-        display: none;
+    if (remove-mw){
+        .col-secondary .items--list :has(img[src="//images.fallenlondon.com/icons/sidebarmakingwavessmall.png"]) {
+            display: none;
+        }
     }
-    /* EXPERIMENTAL AND HIGHLY UNFINISHED
-
-Sets the sidebars to use enough space for four sidebar qualities instead of just two, to compensate for the excess of empty horizontal space on 1080p monitors. If you have suggestions on how to make this look better, please contact me on Discord at sacchihikaru (formerly Sacchi#5268). If necessary I can be found at the official Fallen London Discord.*/
-    /*@media (min-width: 1900px){
-    .col-secondary .items--list .item { max-width: 50%; min-width: 50%; float:left;}
-    .items--list .sidebar-quality{ max-width: 25% !important;  min-width: 25% !important; float:left !important;}
-    .col-secondary, .col-tertiary { max-width: 390px;}
-    .css-13ab8kc-container { max-width: 100%;}
-    .col-primary { max-width: 1080px; }
-}*/
+    
+    /* Further resizes the sidebars to allow for side-by-side currencies and four qualities side-by-side. Makes the outfit selector and view map button look silly. Only works for horizontal resolutions higher than 1900px. */
+    if(wide-gamespace){
+        @media (min-width: 1900px) {
+            .col-secondary .items--list .item {
+                max-width: 50%;
+                min-width: 50%;
+                display: inline-flex;
+            }
+            .items--list .sidebar-quality {
+                max-width: 25% !important;
+                min-width: 25% !important;
+                float: left !important;
+            }
+            .col-secondary,
+            .col-tertiary {
+                max-width: 400px;
+            }
+            .css-13ab8kc-container {
+                max-width: 100%;
+            }
+            .col-primary {
+                max-width: 1080px;
+            }
+            .general-container__row {
+                margin-left: .1rem;
+            }
+        }
+    }
 }
 @-moz-document url-prefix("https://www.fallenlondon.com/myself") {
 
@@ -235,12 +260,12 @@ Sets the sidebars to use enough space for four sidebar qualities instead of just
         padding-top: .1rem;
         padding-bottom: .1rem;
     }
-    
+
     /* These next two are here to make the cameo/lodgings/mantelpiece/scrapbook take more horizontal space without increasing the size of the central game space. Also gives more space to the qualities themselves.  */
     .nav--stacked--1-of-4 {
         width: 17.833%;
     }
-    
+
     .stack-content--3-of-4 {
         margin-left: 1.083%;
         padding-right: 0rem;
