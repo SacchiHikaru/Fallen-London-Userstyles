@@ -1,12 +1,18 @@
 /* ==UserStyle==
 @name           Fallen London Compact UI
 @namespace      http://www.fallenlondon.com
-@version        1.4.1
+@version        1.4.2
 @description    A Fallen London userstyle that compacts the UI, particularly the sidebar.
 @author         Sacchi Hikaru
 @preprocessor stylus
 
-@var checkbox wide-gamespace     "W I D E Gamespace (1080p+)" 0
+@var select sidebar-quality-number     "Number of Side-by-Side Qualities" {
+ "Two (Default)": "default",
+ "Three": "wide",
+ "Four": "bigwide"
+}
+
+@var checkbox widen-game "Widen Primary Column" 0
 @var checkbox remove-mw "Remove Making Waves" 0
 
 ==/UserStyle==*/
@@ -25,7 +31,6 @@
         margin-top: 0px;
         padding-top: 5px !important;
     }
-
 
     /* Disables the "Make Contacts" Snippet on the right sidebar.*/
     .snippet,
@@ -156,7 +161,7 @@
     .travel br {
         display: none;
     }
-    
+
     /* The above removes unnecessary linebreaks. This one adds a very specific necessary one back.*/
     .travel .heading--3 br {
         display: initial !important;
@@ -167,15 +172,50 @@
         display: none;
     }
 
-    /* Hides Making Waves from the sidebar entirely, for those of us who are utterly done with Notability grinding and do not want to think about Making Waves anymore. This is option exists entirely out of spite. */
-    if (remove-mw){
+    /* TOGGLABLE -- Hides Making Waves from the sidebar entirely, for those of us who are utterly done with Notability grinding and do not want to think about Making Waves anymore. This is option exists entirely out of spite. */
+    if (remove-mw) {
         .col-secondary .items--list :has(img[src="//images.fallenlondon.com/icons/sidebarmakingwavessmall.png"]) {
             display: none;
         }
     }
     
-    /* Further resizes the sidebars to allow for side-by-side currencies and four qualities side-by-side. Makes the outfit selector and view map button look silly. Only works for horizontal resolutions higher than 1900px. */
-    if(wide-gamespace){
+    if(widen-game) {
+        .col-primary {
+            max-width: 2000px;}
+    }
+
+    /* SELECTABLE -- Further resizes the sidebars to allow for side-by-side currencies and three/four qualities side-by-side. Makes the outfit selector and view map button look silly. Only works for horizontal resolutions higher than 1500px (three) or 1900px (four). */
+    if(sidebar-quality-number=='wide') {
+        @media (min-width: 1500px) {
+            .col-secondary .items--list .item {
+                max-width: 50%;
+                min-width: 50%;
+                display: inline-flex;
+            }
+
+            .items--list .sidebar-quality {
+                max-width: 33% !important;
+                min-width: 33% !important;
+                float: left !important;
+            }
+
+            .col-secondary,
+            .col-tertiary {
+                max-width: 305px;
+            }
+
+            .col-secondary .css-13ab8kc-container,
+            .col-secondary .css-1hs30sg-container {
+                max-width: 100%;
+            }
+
+            .general-container__row {
+                margin-left: .1rem;
+            }
+        }
+    }
+
+    if(sidebar-quality-number=='bigwide') {
         @media (min-width: 1900px) {
             .col-secondary .items--list .item {
                 max-width: 50%;
@@ -189,16 +229,19 @@
             }
             .col-secondary,
             .col-tertiary {
-                max-width: 400px;
+                max-width: 405px;
             }
-            .css-13ab8kc-container {
+            .col-secondary .css-13ab8kc-container,
+            .col-secondary .css-1hs30sg-container {
                 max-width: 100%;
-            }
-            .col-primary {
-                max-width: 1080px;
             }
             .general-container__row {
                 margin-left: .1rem;
+            }
+            
+            if(widen-game) {
+                .col-primary {
+                    max-width: 1080px;}
             }
         }
     }
