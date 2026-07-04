@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Fallen London Compact UI
 @namespace      http://www.fallenlondon.com
-@version        1.4
+@version        1.4.1
 @description    A Fallen London userstyle that compacts the UI, particularly the sidebar.
 @author         Sacchi Hikaru
 @preprocessor stylus
@@ -163,7 +163,7 @@
     }
 
     /* Disables all known sidebar ads. */
-    .col-tertiary .col-1-of-3 .travel br + a {
+    .col-tertiary .col-1-of-3 .travel a img {
         display: none;
     }
 
