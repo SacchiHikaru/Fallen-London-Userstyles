@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Fallen London Compact UI
 @namespace      http://www.fallenlondon.com
-@version        1.4.2
+@version        1.4.3
 @description    A Fallen London userstyle that compacts the UI, particularly the sidebar.
 @author         Sacchi Hikaru
 @preprocessor stylus
@@ -14,6 +14,7 @@
 
 @var checkbox widen-game "Widen Primary Column" 0
 @var checkbox remove-mw "Remove Making Waves" 0
+@var checkbox SM-EPA-integrated "Small Mercies EPA Tracker Integrated" 0
 
 ==/UserStyle==*/
 @-moz-document url-prefix("https://www.fallenlondon.com") {
@@ -172,16 +173,23 @@
         display: none;
     }
 
+    /* EXNTENSION INTEGRATION -- This SHOULD only do anything if you have the Small Mercies Integrated EPA Tracker enabled. It will align the EPA Numbers with the */
+    .col-secondary .items--list .item div .item__value .item__price:has(span) {
+        padding-top: 0px;
+        margin-left: 5px;
+    }
+
     /* TOGGLABLE -- Hides Making Waves from the sidebar entirely, for those of us who are utterly done with Notability grinding and do not want to think about Making Waves anymore. This is option exists entirely out of spite. */
     if (remove-mw) {
         .col-secondary .items--list :has(img[src="//images.fallenlondon.com/icons/sidebarmakingwavessmall.png"]) {
             display: none;
         }
     }
-    
+
     if(widen-game) {
         .col-primary {
-            max-width: 2000px;}
+            max-width: 2000px;
+        }
     }
 
     /* SELECTABLE -- Further resizes the sidebars to allow for side-by-side currencies and three/four qualities side-by-side. Makes the outfit selector and view map button look silly. Only works for horizontal resolutions higher than 1500px (three) or 1900px (four). */
@@ -212,6 +220,18 @@
             .general-container__row {
                 margin-left: .1rem;
             }
+
+            if(SM-EPA-integrated) {
+                .col-secondary .items--list div:has(.item) {
+                    max-width: 50%;
+                    min-width: 50%;
+                    display: inline-flex;
+                }
+
+                .col-secondary .items--list .item div .item__value .item__price br + span {
+                    font-size: 70% !important;
+                }
+            }
         }
     }
 
@@ -238,10 +258,23 @@
             .general-container__row {
                 margin-left: .1rem;
             }
-            
+
             if(widen-game) {
                 .col-primary {
-                    max-width: 1080px;}
+                    max-width: 1080px;
+                }
+            }
+
+            if(SM-EPA-integrated) {
+                .col-secondary .items--list div:has(.item) {
+                    max-width: 50%;
+                    min-width: 50%;
+                    display: inline-flex;
+                }
+
+                .col-secondary .items--list .item div .item__value .item__price br + span {
+                    font-size: 70% !important;
+                }
             }
         }
     }
