@@ -173,7 +173,7 @@
         display: none;
     }
 
-    /* EXNTENSION INTEGRATION -- This SHOULD only do anything if you have the Small Mercies Integrated EPA Tracker enabled. It will align the EPA Numbers with the */
+    /* EXTENSION INTEGRATION -- This SHOULD only do anything if you have the Small Mercies EPA Tracker enabled. It will align the EPA Numbers with the icon.*/
     .col-secondary .items--list .item div .item__value .item__price:has(span) {
         padding-top: 0px;
         margin-left: 5px;
@@ -186,6 +186,7 @@
         }
     }
 
+    /* TOGGLABLE -- Makes the primary game space as large as it can be without digging into the sidebars. This prevents the empty space to the left and right of the sidebars. */
     if(widen-game) {
         .col-primary {
             max-width: 2000px;
@@ -222,14 +223,28 @@
             }
 
             if(SM-EPA-integrated) {
+                /* EXTENSION INTEGRATION -- This SHOULD only do anything if you have the Small Mercies EPA Tracker enabled. It will make the EPA Tracker also go side-by-side on the curencies on the sidebar, and move the text around a bit to prevent potential issues when total echoes and actions is too high.*/
                 .col-secondary .items--list div:has(.item) {
                     max-width: 50%;
                     min-width: 50%;
                     display: inline-flex;
                 }
-
                 .col-secondary .items--list .item div .item__value .item__price br + span {
-                    font-size: 70% !important;
+                    position: absolute;
+                    top: 50%;
+                    left: 0;
+                }
+                
+                .col-secondary .items--list .item div .item__value .item__price br + a {
+                    position:absolute;
+                    top: 65%
+                    left: 0;
+                }
+                
+                .col-secondary .items--list .item div .item__value .item__price a {
+                    position:absolute;
+                    top: 66%
+                    left: 58%;
                 }
             }
         }
@@ -266,14 +281,28 @@
             }
 
             if(SM-EPA-integrated) {
+                /* EXTENSION INTEGRATION -- This SHOULD only do anything if you have the Small Mercies EPA Tracker enabled. It will make the EPA Tracker also go side-by-side on the curencies on the sidebar, and move the text around a bit to prevent potential issues when total echoes and actions is too high.*/
                 .col-secondary .items--list div:has(.item) {
                     max-width: 50%;
                     min-width: 50%;
                     display: inline-flex;
                 }
-
                 .col-secondary .items--list .item div .item__value .item__price br + span {
-                    font-size: 70% !important;
+                    position: absolute;
+                    top: 50%;
+                    left: 0;
+                }
+                
+                .col-secondary .items--list .item div .item__value .item__price br + a {
+                    position:absolute;
+                    top: 65%
+                    left: 0;
+                }
+                
+                .col-secondary .items--list .item div .item__value .item__price a {
+                    position:absolute;
+                    top: 66%
+                    left: 58%;
                 }
             }
         }
