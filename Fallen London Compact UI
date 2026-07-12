@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Fallen London Compact UI
 @namespace      http://www.fallenlondon.com
-@version        1.4.3
+@version        1.4.5
 @description    A Fallen London userstyle that compacts the UI, particularly the sidebar.
 @author         Sacchi Hikaru
 @preprocessor stylus
@@ -72,16 +72,16 @@
 
     /* Makes sure all the sidebar items are neatly snug against each other and not leaving a ton of empty vertical space.*/
     .items--list .item {
-        padding-top: 4px;
+        padding-top: 4px !important; /* EXTENSION INTEGRATION -- Marked Important to avoid conflict with Small Mercies "Remove progress bars from maxed-out sidebar qualities."*/
         padding-bottom: 4px;
-        margin-top: 0px;
+        margin-top: 0px !important; /* EXTENSION INTEGRATION -- Marked Important to avoid conflict with Small Mercies "Remove progress bars from maxed-out sidebar qualities."*/
     }
 
     /* This makes the sidebar qualities stay side-by-side, greatly saving space.*/
     .items--list .sidebar-quality {
         max-width: 50%;
         min-width: 50%;
-        float: left;
+        display:inline-flex;
     }
 
     /* Hides all quality names and progress bars in the sidebars. */
