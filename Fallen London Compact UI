@@ -1,8 +1,8 @@
 /* ==UserStyle==
 @name           Fallen London Compact UI
 @namespace      http://www.fallenlondon.com
-@version        2.0.0
-@description    A Fallen London userstyle that compacts the UI, particularly the sidebar.
+@version        2.0.1
+@description    A Fallen London userstyle with several options that compact the UI, particularly the sidebar and the main gamespace.
 @author         Sacchi Hikaru
 @preprocessor stylus
 
@@ -222,7 +222,7 @@
     /* TOGGLABLE -- Doubles storylets and branches on the main gamespace, allowing them to show up side-by-side. This code was kindly provided by Platyn, who solved my months of occasional css research on doing this in about 5 minutes. Contains only incredibly minor tweaks to account for specific UI bugs.*/
     if(doubled-slets) {
         /* These two together do most of the magic, in allowing the storylets to be side-by-side and automatically change height based on whichever storylet is the taller one.*/
-        .tab-content__bordered-container {
+        .tab-content__bordered-container, .disclosure-children, .agent-report-branch-container {
             display: flex;
             flex-wrap: wrap;
         }
@@ -233,13 +233,24 @@
             margin-left: .5rem;
         }
     
-        /* This one ensures several things, such as storylet and result text, the buttons and requirements, and the fifth city stories, are still the full size of the gamespace.*/
+        /* This one ensures several things, such as storylet and result text, the buttons and requirements, agent reports and assignments, and the fifth city stories, are still the full size of the gamespace. Also fixes a bug when deleting entries from the journal.*/
         .buttons,
         .media--root,
         .disclosure-wrapper,
-        .tab-content__bordered-container div:has(.media--root + .media--quality-updates) {
+        .tab-content__bordered-container div:has(.media--root + .media--quality-updates),
+        .media--root div:has(.modal__body),
+        .tab-content__bordered-container div:has(.agent-report),
+        .tab-content__bordered-container div:has(.agent-assign-view){
             width: 100%;
         }
+        
+        /* KEEP THIS FOR LATER. I'M EEPY.
+        
+            .agent-summary{
+                grid-template-columns: auto 30rem;
+            }
+            
+            ^^ This is the option that determines the length of the left side of the agent stats.*/
     }
 
     /* TOGGLABLE -- Makes the primary game space as large as it can be without digging into the sidebars. This prevents the empty space to the left and right of the sidebars. */
