@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Fallen London Compact UI
 @namespace      http://www.fallenlondon.com
-@version        2.0.1
+@version        2.0.2
 @description    A Fallen London userstyle with several options that compact the UI, particularly the sidebar and the main gamespace.
 @author         Sacchi Hikaru
 @preprocessor stylus
@@ -242,6 +242,11 @@
         .tab-content__bordered-container div:has(.agent-report),
         .tab-content__bordered-container div:has(.agent-assign-view){
             width: 100%;
+        }
+        
+        /* Places the Spinning Hat Loading Image back on the center of the screen. Fix graciously provided by*/
+        div:has(>span>.loading-image){
+            width:100%
         }
         
         /* KEEP THIS FOR LATER. I'M EEPY.
