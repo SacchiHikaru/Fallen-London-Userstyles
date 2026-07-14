@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Fallen London Compact UI
 @namespace      http://www.fallenlondon.com
-@version        2.0.2
+@version        2.1.0
 @description    A Fallen London userstyle with several options that compact the UI, particularly the sidebar and the main gamespace.
 @author         Sacchi Hikaru
 @preprocessor stylus
@@ -22,12 +22,20 @@
 @var checkbox SM-EPA-integrated "Small Mercies EPA Tracker Integrated" 0
 @var checkbox fl-timekeeper "FL Time Keeper Compatibility" 0
 
+--- Options for the original Compact Wardrobe start here ---
+
+@var checkbox   compact-menu    "Compact Outfit Controls (Mobile)" 0
+@var number     categories-nr   "Items in last equipment row"  5
+@var range       category-size   "Equipment Category Font Size"  [16, 12, 16, .5, 'px']
+
 ==/UserStyle==*/
 
 /* No LLMs, so called "AIs" or similar immoral bullshit was used in the making of this stylesheet. This was the product of months of personal learning, research, work, and the help of fellow unhinged FL players and CSS touchers. Credit goes in particular to Patyn for pratically carrying me through the Doubled Storylets/Branches option.*/
 
 
-@-moz-document url-prefix("https://www.fallenlondon.com") {
+@-moz-document domain("www.fallenlondon.com") {
+
+    /* Primary Changes */
 
     /* Shortens the margin to the left of the whole main game screen, making the main game column larger by pushing the left sidebar a little. It's a tiny change and should only affect 720p screens, not 1080p ones.*/
     .general-container__row {
@@ -233,18 +241,24 @@
             margin-left: .5rem;
         }
     
-        /* This one ensures several things, such as storylet and result text, the buttons and requirements, agent reports and assignments, and the fifth city stories, are still the full size of the gamespace. Also fixes a bug when deleting entries from the journal.*/
+        /* This one ensures several things, such as storylet and result text, the buttons and requirements, agent reports and assignments, the fifth city stories, sell dialogue, possessions tab (only when searching for some reason???), and fate stories are still the full size of the gamespace. Also fixes a bug when deleting entries from the journal.*/
         .buttons,
         .media--root,
         .disclosure-wrapper,
         .tab-content__bordered-container div:has(.media--root + .media--quality-updates),
         .media--root div:has(.modal__body),
         .tab-content__bordered-container div:has(.agent-report),
-        .tab-content__bordered-container div:has(.agent-assign-view){
+        .tab-content__bordered-container div:has(.agent-assign-view),
+        .tab-content__bordered-container div:has(span div .row .shop__item),
+        .modal-dialog__overlay .media--root div:has(>.exchange-ui__header),
+        .tab-content__bordered-container div:has(.possessions),
+        .fate-cards .fate-card--story,
+        .fate-header__subscription-container .storylet,
+        .tab-content__bordered-container .fate-card{
             width: 100%;
         }
         
-        /* Places the Spinning Hat Loading Image back on the center of the screen. Fix graciously provided by*/
+        /* Places the Spinning Hat Loading Image back on the center of the screen. Fix graciously provided by Platyn*/
         div:has(>span>.loading-image){
             width:100%
         }
@@ -452,7 +466,9 @@
         }
     }
 }
-@-moz-document url-prefix("https://www.fallenlondon.com/myself") {
+@-moz-document domain("www.fallenlondon.com") {
+
+    /* Myself Tab */
 
     /* On the "myself" page, makes me Mantelpiece/Scrapbook bar be next to the Cameo & Lodgings images.*/
     .myself-profile__cameo-and-lodgings {
@@ -521,4 +537,78 @@
         padding-left: 1.083%;
         width: 81.083%;
     }
+}
+@-moz-document domain("www.fallenlondon.com") {
+    
+    /* Possessions Tab */
+    
+    /* Compact Wardrobe Stylesheet, ported over to this one with permission from original creator Platyn. Original code and contributions go directly to them.*/
+    
+	/** all rows are turned into full width flex elements **/
+	.equipment-group-list {
+		display: flex;
+		flex-wrap: wrap;
+	}
+	.equipment-group-list__item {
+		width: 100%;
+	}
+
+	/** boons & burdens, treasures & tools of trade are collapsed to one row if both in a pair are present **/
+	.equipment-group-list:has(.equipment-group-list__item:nth-child(2) .equipment-group) .equipment-group-list__item:nth-child(1),
+	.equipment-group-list:has(.equipment-group-list__item:nth-child(13) .equipment-group) .equipment-group-list__item:nth-child(11) {
+		width: calc(50% - 5px);
+		margin-right: 10px;
+	}
+	.equipment-group-list:has(.equipment-group-list__item:nth-child(1) .equipment-group) .equipment-group-list__item:nth-child(2),
+	.equipment-group-list:has(.equipment-group-list__item:nth-child(11) .equipment-group) .equipment-group-list__item:nth-child(13) {
+		width: calc(50% - 5px);
+	}
+
+	/** all unchangable item categories are collapsed into the last row **/
+	.equipment-group-list__item:has(.equipment-group__equipment-slot-container--unchangeable) {
+		width: "calc((100% + 10px)/%s - 10px)" % categories-nr;
+		margin-right: 10px;
+		order: 1;
+	}
+	.equipment-group-list__item:has(.equipment-group__equipment-slot-container--unchangeable):last-of-type {
+		margin-right: 0;
+	}
+	.available-item-list:not(:has(.available-item-list__item)) {
+		display: none;
+	}
+
+	/** optional change to category title font size **/
+	.equipment-group__name {
+		font-size: category-size;
+	}
+
+	if (compact-menu) {
+		/** makes all controls shorter **/
+		.outfit-controls-container .css-13ab8kc-container,
+		.outfit-controls-container .css-1hs30sg-container,
+		.outfit-controls--locked,
+		.outfit-controls__search-field {
+			max-width: 14rem;
+		}
+		.outfit-controls__outfit-rename-field {
+			min-width: 14rem;
+			margin-right: 44.8px;
+		}
+		/** switches informational text to one word only **/
+		.outfit-controls-container .button,
+		.outfit-controls__save-outfit-success-message span {
+			font-size: 0;
+		}
+		.outfit-controls-container .button:after {
+			content: "Equip";
+			font-size: 13px;
+		}
+		.outfit-controls__save-outfit-success-message {
+			right: 0;
+		}
+		.outfit-controls__save-outfit-success-message span:after {
+			content: "Updated";
+			font-size: 14px;
+		}
+	}
 }
