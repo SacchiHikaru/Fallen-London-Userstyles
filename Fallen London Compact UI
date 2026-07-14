@@ -1,8 +1,8 @@
 /* ==UserStyle==
 @name           Fallen London Compact UI
 @namespace      http://www.fallenlondon.com
-@version        2.1.0
-@description    A Fallen London userstyle with several options that compact the UI, particularly the sidebar and the main gamespace.
+@version        2.2.0
+@description    A Fallen London userstyle with several options that compact the UI.
 @author         Sacchi Hikaru
 @preprocessor stylus
 
@@ -21,6 +21,8 @@
 @var checkbox small-images "Small Storylet/Branch Images" 0
 @var checkbox SM-EPA-integrated "Small Mercies EPA Tracker Integrated" 0
 @var checkbox fl-timekeeper "FL Time Keeper Compatibility" 0
+@var checkbox doubled-agents "Doubled Agents" 0
+@var checkbox working-agents "Include Doubled Working Agents" 0
 
 --- Options for the original Compact Wardrobe start here ---
 
@@ -29,14 +31,10 @@
 @var range       category-size   "Equipment Category Font Size"  [16, 12, 16, .5, 'px']
 
 ==/UserStyle==*/
-
-/* No LLMs, so called "AIs" or similar immoral bullshit was used in the making of this stylesheet. This was the product of months of personal learning, research, work, and the help of fellow unhinged FL players and CSS touchers. Credit goes in particular to Patyn for pratically carrying me through the Doubled Storylets/Branches option.*/
-
-
+/* No LLMs, so called "AIs" or similar immoral bullshit was used in the making of this stylesheet. This was the product of months of personal learning, research, work, and the help of fellow unhinged FL players and CSS touchers. Credit goes in particular to Patyn for pratically carrying me through the Doubled Storylets/Branches option, and allowing me to integrate Compact Wardrobe wholesale.*/
 @-moz-document domain("www.fallenlondon.com") {
 
     /* Primary Changes */
-
     /* Shortens the margin to the left of the whole main game screen, making the main game column larger by pushing the left sidebar a little. It's a tiny change and should only affect 720p screens, not 1080p ones.*/
     .general-container__row {
         margin-left: .5rem;
@@ -230,7 +228,9 @@
     /* TOGGLABLE -- Doubles storylets and branches on the main gamespace, allowing them to show up side-by-side. This code was kindly provided by Platyn, who solved my months of occasional css research on doing this in about 5 minutes. Contains only incredibly minor tweaks to account for specific UI bugs.*/
     if(doubled-slets) {
         /* These two together do most of the magic, in allowing the storylets to be side-by-side and automatically change height based on whichever storylet is the taller one.*/
-        .tab-content__bordered-container, .disclosure-children, .agent-report-branch-container {
+        .tab-content__bordered-container,
+        .disclosure-children,
+        .agent-report-branch-container {
             display: flex;
             flex-wrap: wrap;
         }
@@ -240,7 +240,7 @@
             width: calc(50% - 0.5rem);
             margin-left: .5rem;
         }
-    
+
         /* This one ensures several things, such as storylet and result text, the buttons and requirements, agent reports and assignments, the fifth city stories, sell dialogue, possessions tab (only when searching for some reason???), and fate stories are still the full size of the gamespace. Also fixes a bug when deleting entries from the journal.*/
         .buttons,
         .media--root,
@@ -254,15 +254,15 @@
         .tab-content__bordered-container div:has(.possessions),
         .fate-cards .fate-card--story,
         .fate-header__subscription-container .storylet,
-        .tab-content__bordered-container .fate-card{
+        .tab-content__bordered-container .fate-card {
             width: 100%;
         }
-        
+
         /* Places the Spinning Hat Loading Image back on the center of the screen. Fix graciously provided by Platyn*/
-        div:has(>span>.loading-image){
-            width:100%
+        div:has(>span>.loading-image) {
+            width: 100%
         }
-        
+
         /* KEEP THIS FOR LATER. I'M EEPY.
         
             .agent-summary{
@@ -469,7 +469,6 @@
 @-moz-document domain("www.fallenlondon.com") {
 
     /* Myself Tab */
-
     /* On the "myself" page, makes me Mantelpiece/Scrapbook bar be next to the Cameo & Lodgings images.*/
     .myself-profile__cameo-and-lodgings {
         float: left;
@@ -539,76 +538,146 @@
     }
 }
 @-moz-document domain("www.fallenlondon.com") {
-    
+
     /* Possessions Tab */
-    
     /* Compact Wardrobe Stylesheet, ported over to this one with permission from original creator Platyn. Original code and contributions go directly to them.*/
-    
-	/** all rows are turned into full width flex elements **/
-	.equipment-group-list {
-		display: flex;
-		flex-wrap: wrap;
-	}
-	.equipment-group-list__item {
-		width: 100%;
-	}
+    /** all rows are turned into full width flex elements **/
+    .equipment-group-list {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .equipment-group-list__item {
+        width: 100%;
+    }
 
-	/** boons & burdens, treasures & tools of trade are collapsed to one row if both in a pair are present **/
-	.equipment-group-list:has(.equipment-group-list__item:nth-child(2) .equipment-group) .equipment-group-list__item:nth-child(1),
-	.equipment-group-list:has(.equipment-group-list__item:nth-child(13) .equipment-group) .equipment-group-list__item:nth-child(11) {
-		width: calc(50% - 5px);
-		margin-right: 10px;
-	}
-	.equipment-group-list:has(.equipment-group-list__item:nth-child(1) .equipment-group) .equipment-group-list__item:nth-child(2),
-	.equipment-group-list:has(.equipment-group-list__item:nth-child(11) .equipment-group) .equipment-group-list__item:nth-child(13) {
-		width: calc(50% - 5px);
-	}
+    /** boons & burdens, treasures & tools of trade are collapsed to one row if both in a pair are present **/
+    .equipment-group-list:has(.equipment-group-list__item:nth-child(2) .equipment-group) .equipment-group-list__item:nth-child(1),
+    .equipment-group-list:has(.equipment-group-list__item:nth-child(13) .equipment-group) .equipment-group-list__item:nth-child(11) {
+        width: calc(50% - 5px);
+        margin-right: 10px;
+    }
+    .equipment-group-list:has(.equipment-group-list__item:nth-child(1) .equipment-group) .equipment-group-list__item:nth-child(2),
+    .equipment-group-list:has(.equipment-group-list__item:nth-child(11) .equipment-group) .equipment-group-list__item:nth-child(13) {
+        width: calc(50% - 5px);
+    }
 
-	/** all unchangable item categories are collapsed into the last row **/
-	.equipment-group-list__item:has(.equipment-group__equipment-slot-container--unchangeable) {
-		width: "calc((100% + 10px)/%s - 10px)" % categories-nr;
-		margin-right: 10px;
-		order: 1;
-	}
-	.equipment-group-list__item:has(.equipment-group__equipment-slot-container--unchangeable):last-of-type {
-		margin-right: 0;
-	}
-	.available-item-list:not(:has(.available-item-list__item)) {
-		display: none;
-	}
+    /** all unchangable item categories are collapsed into the last row **/
+    .equipment-group-list__item:has(.equipment-group__equipment-slot-container--unchangeable) {
+        width: "calc((100% + 10px)/%s - 10px)" % categories-nr;
+        margin-right: 10px;
+        order: 1;
+    }
+    .equipment-group-list__item:has(.equipment-group__equipment-slot-container--unchangeable):last-of-type {
+        margin-right: 0;
+    }
+    .available-item-list:not(:has(.available-item-list__item)) {
+        display: none;
+    }
 
-	/** optional change to category title font size **/
-	.equipment-group__name {
-		font-size: category-size;
-	}
+    /** optional change to category title font size **/
+    .equipment-group__name {
+        font-size: category-size;
+    }
 
-	if (compact-menu) {
-		/** makes all controls shorter **/
-		.outfit-controls-container .css-13ab8kc-container,
-		.outfit-controls-container .css-1hs30sg-container,
-		.outfit-controls--locked,
-		.outfit-controls__search-field {
-			max-width: 14rem;
-		}
-		.outfit-controls__outfit-rename-field {
-			min-width: 14rem;
-			margin-right: 44.8px;
-		}
-		/** switches informational text to one word only **/
-		.outfit-controls-container .button,
-		.outfit-controls__save-outfit-success-message span {
-			font-size: 0;
-		}
-		.outfit-controls-container .button:after {
-			content: "Equip";
-			font-size: 13px;
-		}
-		.outfit-controls__save-outfit-success-message {
-			right: 0;
-		}
-		.outfit-controls__save-outfit-success-message span:after {
-			content: "Updated";
-			font-size: 14px;
-		}
-	}
+    if (compact-menu) {
+        /** makes all controls shorter **/
+        .outfit-controls-container .css-13ab8kc-container,
+        .outfit-controls-container .css-1hs30sg-container,
+        .outfit-controls--locked,
+        .outfit-controls__search-field {
+            max-width: 14rem;
+        }
+        .outfit-controls__outfit-rename-field {
+            min-width: 14rem;
+            margin-right: 44.8px;
+        }
+        /** switches informational text to one word only **/
+        .outfit-controls-container .button,
+        .outfit-controls__save-outfit-success-message span {
+            font-size: 0;
+        }
+        .outfit-controls-container .button:after {
+            content: "Equip";
+            font-size: 13px;
+        }
+        .outfit-controls__save-outfit-success-message {
+            right: 0;
+        }
+        .outfit-controls__save-outfit-success-message span:after {
+            content: "Updated";
+            font-size: 14px;
+        }
+    }
+}
+
+@-moz-document domain("www.fallenlondon.com") {
+    /* Agents Tab */
+    /* Removes the bar at the top of the Agents tab, because it interacted weirdly with some of the other changes.*/
+    #agents hr {
+        display: none;
+    }
+
+    /* Pushes the name of the Agent and their portrait closer to the left edge of the container.*/
+    .agent-body-row,
+    .agent-header-row {
+        margin-left: 0px;
+    }
+
+    if(doubled-agents) {
+
+        /* Allows agent containers to go side-by-side.*/
+        #agents {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        /* Makes sure free agents always take up the exact same amount of horizontal space, allowing them to be side-by-side seamlessly.*/
+        .free-agent {
+            width: calc(50% - .5rem);
+            margin-right: .5rem;
+            margin-top: .5rem
+        }
+
+        /* Working Agents stay the same, as the working agent UI can look awkward on lower resolutions.*/
+        .working-agent {
+            width: 100%;
+        }
+
+        /* These two effectively just swap the Agent UI to using the Mobile UI. where the portrait plus flavor text and stats is above the agent's stats and equipment. This makes things much cleaner and more adaptable to different resolutions.*/
+        .agent-summary {
+            grid-template-columns: auto 1fr;
+        }
+
+        .agent-body-row {
+            grid-column-gap: unset;
+            -moz-column-gap: unset;
+            column-gap: unset;
+            grid-template-columns: unset;
+        }
+
+        /* Makes stats closer together so more of them can fit horizontally.*/
+        .agent-stat-container {
+            gap: .1rem;
+        }
+
+        /* Reduces the gap between the agent portraits and their stats/gear.*/
+        .agent-body-row .agent-summary .media__left {
+            padding-bottom: 0px;
+        }
+
+        /* Readds the bar separating agent stats and equipment, but also makes the separation smaller.*/
+        .agent-body-row .agent-details hr {
+            display: revert !important;
+            margin: .5rem 0 .2rem;
+        }
+
+        if(working-agents) {
+            /* Makes working agents also do the two-by-two setup of the free agents. Can look really wonky on lower resolutions.*/
+            .working-agent {
+                width: calc(50% - .5rem);
+                margin-right: .5rem;
+                margin-top: .5rem
+            }
+        }
+    }
 }
