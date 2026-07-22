@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Fallen London Compact UI
 @namespace      http://www.fallenlondon.com
-@version        2.2.0
+@version        2.2.1
 @description    A Fallen London userstyle with several options that compact the UI.
 @author         Sacchi Hikaru
 @preprocessor stylus
@@ -17,7 +17,7 @@
 @var checkbox remove-mw "Remove Making Waves" 0
 @var checkbox center-deck "Center Opportunity Deck (Requires Doubled Storylet/Branches)" 0
 @var checkbox no-diff "Disable Challenge Difficulty Display" 0
-@var checkbox slet-tweaks "Storylet/Branch Tweaks" 0
+@var checkbox small-plans-button "Small Plans/Journal Button" 0
 @var checkbox small-images "Small Storylet/Branch Images" 0
 @var checkbox SM-EPA-integrated "Small Mercies EPA Tracker Integrated" 0
 @var checkbox fl-timekeeper "FL Time Keeper Compatibility" 0
@@ -243,6 +243,7 @@
 
         /* This one ensures several things, such as storylet and result text, the buttons and requirements, agent reports and assignments, the fifth city stories, sell dialogue, possessions tab (only when searching for some reason???), and fate stories are still the full size of the gamespace. Also fixes a bug when deleting entries from the journal.*/
         .buttons,
+        div:has(>.media--root),
         .media--root,
         .disclosure-wrapper,
         .tab-content__bordered-container div:has(.media--root + .media--quality-updates),
@@ -259,17 +260,9 @@
         }
 
         /* Places the Spinning Hat Loading Image back on the center of the screen. Fix graciously provided by Platyn*/
-        div:has(>span>.loading-image) {
+        div:has(>span>.loading-image), .loading-image {
             width: 100%
         }
-
-        /* KEEP THIS FOR LATER. I'M EEPY.
-        
-            .agent-summary{
-                grid-template-columns: auto 30rem;
-            }
-            
-            ^^ This is the option that determines the length of the left side of the agent stats.*/
     }
 
     /* TOGGLABLE -- Makes the primary game space as large as it can be without digging into the sidebars. This prevents the empty space to the left and right of the sidebars. */
@@ -302,20 +295,20 @@
     }
 
     /* TOGGLABLE -- Several tweaks to the layout of branches and storylets, generally making them take less vertical space and make better use of the space they have.*/
-    if(slet-tweaks) {
+    if(small-plans-button) {
 
         /* Makes the Plans button smaller and moves them to a better position to account for the new size. Also seamlessly integrates with FL Identica and FL One Click Wiki Extensions.*/
-        .buttonlet-container {
-            transform: scale(0.8);
+        .branch__plan-buttonlet{
+            transform: scale(0.76);
             margin-left: -3px;
-            margin-right: -3px;
+            margin-right: -6px;
             margin-top: -8px;
         }
-
-        /* This makes the title of the storylets and branches larger. This was the only way I found to get the actual description texts to go all the way to the right instead of stopping midway. At least, without making the branch buttons so small as to look bad.*/
-        .storylet__body .storylet__title-and-description .heading--3,
-        .branch__body .branch__title {
-            font-size: 18.6px;
+        
+        .storylet-root__frequency {
+            transform: scale(0.76);
+            margin-right: -8px;
+            margin-top: -4px;
         }
     }
 
