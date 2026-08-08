@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Fallen London Compact UI
 @namespace      http://www.fallenlondon.com
-@version        2.2.1
+@version        2.2.2
 @description    A Fallen London userstyle with several options that compact the UI.
 @author         Sacchi Hikaru
 @preprocessor stylus
@@ -53,7 +53,8 @@
     /* This is one of the primary changes, making sure that the sidebars are large enough to accomodate doubled stats.*/
     .col-secondary,
     .col-tertiary {
-        max-width: 205px;
+        min-width: 205px !important;
+        max-width: 205px !important;
         margin-top: 0px;
         padding-top: 5px !important;
     }
@@ -241,7 +242,7 @@
             margin-left: .5rem;
         }
 
-        /* This one ensures several things, such as storylet and result text, the buttons and requirements, agent reports and assignments, the fifth city stories, sell dialogue, possessions tab (only when searching for some reason???), and fate stories are still the full size of the gamespace. Also fixes a bug when deleting entries from the journal.*/
+        /* This one ensures several things, such as storylet and result text, the buttons and requirements, agent reports and assignments, the fifth city stories, sell dialogue, possessions tab (only when searching for some reason???), zee/roof travel storylets and fate stories are still the full size of the gamespace. Also fixes a bug when deleting entries from the journal.*/
         .buttons,
         div:has(>.media--root),
         .media--root,
@@ -255,7 +256,9 @@
         .tab-content__bordered-container div:has(.possessions),
         .fate-cards .fate-card--story,
         .fate-header__subscription-container .storylet,
-        .tab-content__bordered-container .fate-card {
+        .tab-content__bordered-container .fate-card,
+        .modal--gate-storylet__content,
+        div:has(.branch.plans_separator){
             width: 100%;
         }
 
@@ -361,7 +364,8 @@
 
             .col-secondary,
             .col-tertiary {
-                max-width: 305px;
+                min-width: 305px !important;
+                max-width: 305px !important;
             }
 
             .col-secondary .css-13ab8kc-container,
@@ -415,7 +419,8 @@
             }
             .col-secondary,
             .col-tertiary {
-                max-width: 405px;
+                min-width: 405px !important;
+                max-width: 405px !important;
             }
             .col-secondary .css-13ab8kc-container,
             .col-secondary .css-1hs30sg-container {
