@@ -1,17 +1,19 @@
 /* ==UserStyle==
 @name           Fallen London Compact UI
 @namespace      http://www.fallenlondon.com
-@version        2.2.2
+@version        2.3.0
 @description    A Fallen London userstyle with several options that compact the UI.
 @author         Sacchi Hikaru
 @preprocessor stylus
 
 @var select sidebar-quality-number     "Number of Side-by-Side Qualities" {
+ "Disabled": "none",
  "Two (Default)": "default",
  "Three": "wide",
  "Four": "bigwide"
 }
 
+@var checkbox side-by-side-myself "Side-by-side Myself Qualities" 0
 @var checkbox widen-game "Widen Primary Column" 0
 @var checkbox doubled-slets "Doubled Storylet & Branches" 0
 @var checkbox remove-mw "Remove Making Waves" 0
@@ -50,11 +52,9 @@
         margin-top: .5rem !important;
     }
 
-    /* This is one of the primary changes, making sure that the sidebars are large enough to accomodate doubled stats.*/
+    /* This only makes sure that every item in the sidebar is snug with each other.*/
     .col-secondary,
     .col-tertiary {
-        min-width: 205px !important;
-        max-width: 205px !important;
         margin-top: 0px;
         padding-top: 5px !important;
     }
@@ -67,6 +67,12 @@
 
     /* Disables the "Enhanced your Subscription" text.*/
     .enhanced-text--inverse {
+        display: none;
+    }
+
+    /* Hides all quality names and progress bars in the sidebars.*/
+    .sidebar .item__desc .item__name,
+    .sidebar-quality .progress-bar {
         display: none;
     }
 
@@ -103,19 +109,6 @@
         padding-bottom: 4px;
         margin-top: 0px !important;
         /* EXTENSION INTEGRATION -- Marked Important to avoid conflict with Small Mercies "Remove progress bars from maxed-out sidebar qualities."*/
-    }
-
-    /* This makes the sidebar qualities stay side-by-side, greatly saving space.*/
-    .items--list .sidebar-quality {
-        max-width: 50%;
-        min-width: 50%;
-        float: left;
-    }
-
-    /* Hides all quality names and progress bars in the sidebars. */
-    .sidebar .item__desc .item__name,
-    .sidebar-quality .progress-bar {
-        display: none;
     }
 
     /* Casts Yeetus Deletus on the subscription text next to the fate button on the sidebar. Includes hiding the "time left to renew" text.*/
@@ -258,12 +251,13 @@
         .fate-header__subscription-container .storylet,
         .tab-content__bordered-container .fate-card,
         .modal--gate-storylet__content,
-        div:has(.branch.plans_separator){
+        div:has(.branch.plans_separator) {
             width: 100%;
         }
 
         /* Places the Spinning Hat Loading Image back on the center of the screen. Fix graciously provided by Platyn*/
-        div:has(>span>.loading-image), .loading-image {
+        div:has(>span>.loading-image),
+        .loading-image {
             width: 100%
         }
     }
@@ -301,13 +295,13 @@
     if(small-plans-button) {
 
         /* Makes the Plans button smaller and moves them to a better position to account for the new size. Also seamlessly integrates with FL Identica and FL One Click Wiki Extensions.*/
-        .branch__plan-buttonlet{
+        .branch__plan-buttonlet {
             transform: scale(0.76);
             margin-left: -3px;
             margin-right: -6px;
             margin-top: -8px;
         }
-        
+
         .storylet-root__frequency {
             transform: scale(0.76);
             margin-right: -8px;
@@ -346,7 +340,23 @@
         }
     }
 
-    /* SELECTABLE -- Further resizes the sidebars to allow for side-by-side currencies and three/four qualities side-by-side. Makes the outfit selector and view map button look silly. Only works for horizontal resolutions higher than 1500px (three) or 1900px (four). */
+    /* SELECTABLE -- Side-by-side qualities. Can also further resizes the sidebars to allow for side-by-side currencies and three/four qualities side-by-side. Makes the outfit selector and view map button look silly at three/four. Only works for horizontal resolutions higher than 1500px (three) or 1900px (four). */
+    if(sidebar-quality-number=='default') {
+        /* This makes the sidebar qualities stay side-by-side, greatly saving space.*/
+        .items--list .sidebar-quality {
+            max-width: 50%;
+            min-width: 50%;
+            float: left;
+        }
+
+        .col-secondary,
+        .col-tertiary {
+            min-width: 205px !important;
+            max-width: 205px !important;
+        }
+    }
+
+
     if(sidebar-quality-number=='wide') {
         @media (min-width: 1500px) {
             .col-secondary .items--list .item {
@@ -364,8 +374,8 @@
 
             .col-secondary,
             .col-tertiary {
-                min-width: 305px !important;
-                max-width: 305px !important;
+                min-width: 310px !important;
+                max-width: 310px !important;
             }
 
             .col-secondary .css-13ab8kc-container,
@@ -419,8 +429,8 @@
             }
             .col-secondary,
             .col-tertiary {
-                min-width: 405px !important;
-                max-width: 405px !important;
+                min-width: 415px !important;
+                max-width: 415px !important;
             }
             .col-secondary .css-13ab8kc-container,
             .col-secondary .css-1hs30sg-container {
@@ -533,6 +543,36 @@
         padding-right: 0rem;
         padding-left: 1.083%;
         width: 81.083%;
+    }
+
+    /* TOGGLABLE -- Makes the myself tab qualities side-by-side. Defaults to a two side-by-side, but changes to three if you have 1900px or more of horizontal resolution.*/
+    if(side-by-side-myself) {
+        .quality-group ul {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .quality-group ul li {
+            width: calc(50% - .4rem);
+            padding-left: .2rem;
+            padding-right: .2rem;
+        }
+
+        .quality-item .quality-item__icon {
+            margin-right: .4rem;
+        }
+
+        .quality-item__description .descriptive {
+            display: none;
+        }
+
+        @media (min-width: 1900px) {
+            .quality-group ul li {
+                width: calc(33% - .4rem);
+                padding-left: .2rem;
+                padding-right: .2rem;
+            }
+        }
     }
 }
 @-moz-document domain("www.fallenlondon.com") {
