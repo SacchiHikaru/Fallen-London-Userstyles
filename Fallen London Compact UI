@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Fallen London Compact UI
 @namespace      http://www.fallenlondon.com
-@version        2.3.0
+@version        2.3.1
 @description    A Fallen London userstyle with several options that compact the UI.
 @author         Sacchi Hikaru
 @preprocessor stylus
@@ -194,6 +194,13 @@
         display: none;
     }
 
+    /* EXTENSION INTEGRATION -- If you have favours in the sidebar enabled from Small Mercies, this will force them to be side-by-side. */
+    .col-tertiary .items--list .sidebar-quality {
+        max-width: 50%;
+        min-width: 50%;
+        float: left;
+    }
+
     /* EXTENSION INTEGRATION -- This SHOULD only do anything if you have the Small Mercies EPA Tracker enabled. It will align the EPA Numbers with the icon.*/
     .col-secondary .items--list .item div .item__value .item__price:has(span) {
         padding-top: 0px;
@@ -251,7 +258,9 @@
         .fate-header__subscription-container .storylet,
         .tab-content__bordered-container .fate-card,
         .modal--gate-storylet__content,
-        div:has(.branch.plans_separator) {
+        div:has(.branch.plans_separator),
+        .tab-content__bordered-container:not(:has(.media--branch ~ .media--branch)) .media--branch,
+        .tab-content__bordered-container:not(:has(.storylet ~ .storylet)) .storylet {
             width: 100%;
         }
 
