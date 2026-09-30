@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Fallen London Compact UI
 @namespace      http://www.fallenlondon.com
-@version        2.3.1
+@version        2.3.2
 @description    A Fallen London userstyle with several options that compact the UI.
 @author         Sacchi Hikaru
 @preprocessor stylus
@@ -25,6 +25,7 @@
 @var checkbox fl-timekeeper "FL Time Keeper Compatibility" 0
 @var checkbox doubled-agents "Doubled Agents" 0
 @var checkbox working-agents "Include Doubled Working Agents" 0
+@var checkbox one-row-agents "Single Row for Agent Stats" 0
 
 --- Options for the original Compact Wardrobe start here ---
 
@@ -33,7 +34,7 @@
 @var range       category-size   "Equipment Category Font Size"  [16, 12, 16, .5, 'px']
 
 ==/UserStyle==*/
-/* No LLMs, so called "AIs" or similar immoral bullshit was used in the making of this stylesheet. This was the product of months of personal learning, research, work, and the help of fellow unhinged FL players and CSS touchers. Credit goes in particular to Patyn for pratically carrying me through the Doubled Storylets/Branches option, and allowing me to integrate Compact Wardrobe wholesale.*/
+/* No LLMs, so called "AIs" or similar immoral bullshit was used in the making of this stylesheet. This was the product of months of personal learning, research, work, and the help of fellow unhinged FL players and CSS touchers. Credit goes in particular to Platyn for pratically carrying me through the Doubled Storylets/Branches option, and allowing me to integrate Compact Wardrobe wholesale.*/
 @-moz-document domain("www.fallenlondon.com") {
 
     /* Primary Changes */
@@ -239,7 +240,8 @@
         .media.storylet,
         .persistent {
             width: calc(50% - 0.5rem);
-            margin-left: .5rem;
+            margin-left: .25rem;
+            margin-right: .25rem
         }
 
         /* This one ensures several things, such as storylet and result text, the buttons and requirements, agent reports and assignments, the fifth city stories, sell dialogue, possessions tab (only when searching for some reason???), zee/roof travel storylets and fate stories are still the full size of the gamespace. Also fixes a bug when deleting entries from the journal.*/
@@ -260,7 +262,8 @@
         .modal--gate-storylet__content,
         div:has(.branch.plans_separator),
         .tab-content__bordered-container:not(:has(.media--branch ~ .media--branch)) .media--branch,
-        .tab-content__bordered-container:not(:has(.storylet ~ .storylet)) .storylet {
+        .tab-content__bordered-container:not(:has(.storylet ~ .storylet)) .storylet,
+        .modal--gate-storylet__content:not(:has(.media--branch ~ .media--branch)) .media--branch{
             width: 100%;
         }
 
@@ -278,9 +281,11 @@
         }
     }
 
-    /* TOGGLABLE -- Hides Making Waves from the sidebar entirely, for those of us who are utterly done with Notability grinding and do not want to think about Making Waves anymore. This is option exists entirely out of spite. */
+    /* TOGGLABLE -- Hides Making Waves from the sidebar entirely, for those of us who are utterly done with Notability grinding and do not want to think about Making Waves anymore. This is option exists entirely out of spite. 
+    EXTENSION INTEGRATION: the ".agent-stat-wrapper" part is to cover for if you are using the compact sidebar from Small Mercies.*/
     if (remove-mw) {
-        .col-secondary .items--list :has(img[src="//images.fallenlondon.com/icons/sidebarmakingwavessmall.png"]) {
+        .col-secondary .sidebar-quality:has(img[src="//images.fallenlondon.com/icons/sidebarmakingwavessmall.png"]),
+        .col-secondary .agent-stat-wrapper:has(img[src="//images.fallenlondon.com/icons/sidebarmakingwavessmall.png"]){
             display: none;
         }
     }
@@ -669,6 +674,13 @@
     .agent-header-row {
         margin-left: 0px;
     }
+    
+    if(one-row-agents) {
+            /* Makes agent stats only have one row, instead of one row for the Highway stats and one row for Everything Else™.*/
+            .agent-stat-new-row {
+                grid-column: unset;
+            }
+        }
 
     if(doubled-agents) {
 
