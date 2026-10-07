@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Fallen London Compact UI
 @namespace      http://www.fallenlondon.com
-@version        2.3.2
+@version        2.4
 @description    A Fallen London userstyle with several options that compact the UI.
 @author         Sacchi Hikaru
 @preprocessor stylus
@@ -13,12 +13,17 @@
  "Four": "bigwide"
 }
 
+@var select compact-challenge "Compact Challenges" {
+    "Disabled": "none",
+    "For Light Mode": "lightmode",
+    "For Dark Mode": "darkmode"
+}
+
 @var checkbox side-by-side-myself "Side-by-side Myself Qualities" 0
 @var checkbox widen-game "Widen Primary Column" 0
 @var checkbox doubled-slets "Doubled Storylet & Branches" 0
 @var checkbox remove-mw "Remove Making Waves" 0
 @var checkbox center-deck "Center Opportunity Deck (Requires Doubled Storylet/Branches)" 0
-@var checkbox no-diff "Disable Challenge Difficulty Display" 0
 @var checkbox small-plans-button "Small Plans/Journal Button" 0
 @var checkbox small-images "Small Storylet/Branch Images" 0
 @var checkbox SM-EPA-integrated "Small Mercies EPA Tracker Integrated" 0
@@ -230,9 +235,12 @@
     /* TOGGLABLE -- Doubles storylets and branches on the main gamespace, allowing them to show up side-by-side. This code was kindly provided by Platyn, who solved my months of occasional css research on doing this in about 5 minutes. Contains only incredibly minor tweaks to account for specific UI bugs.*/
     if(doubled-slets) {
         /* These two together do most of the magic, in allowing the storylets to be side-by-side and automatically change height based on whichever storylet is the taller one.*/
-        .tab-content__bordered-container,
+        /* The "not-has-aria-label" is specifically to prevent the halving of the Enhanced Exceptional Friendship menu, using the single most hacky thing possible. It should function.*/
+        .tab-content__bordered-container:not(:has([aria-label="Freshly Added"])),
         .disclosure-children,
-        .agent-report-branch-container {
+        .agent-report-branch-container,
+        .modal--gate-storylet__content div:has(.media--branch ~ .media--branch)
+        {
             display: flex;
             flex-wrap: wrap;
         }
@@ -263,7 +271,7 @@
         div:has(.branch.plans_separator),
         .tab-content__bordered-container:not(:has(.media--branch ~ .media--branch)) .media--branch,
         .tab-content__bordered-container:not(:has(.storylet ~ .storylet)) .storylet,
-        .modal--gate-storylet__content:not(:has(.media--branch ~ .media--branch)) .media--branch{
+        .modal--gate-storylet__content:not(:has(.media--branch ~ .media--branch)) .media--branch {
             width: 100%;
         }
 
@@ -271,6 +279,114 @@
         div:has(>span>.loading-image),
         .loading-image {
             width: 100%
+        }
+    }
+    
+        /* TOGGLABLE -- Compacts the Challenge Displays to take less vertical space, predominantly by removing potentially redundant information. */
+    if(compact-challenge !="none") {
+    
+        /* Reduces the space between the dividing bar between the choice text and the challenge itself.*/
+        .challenges {
+            padding-top: .1rem;
+        }
+        
+        /* Makes challenge images smaller, and reduces the space between them, the text to its right, and aligns them with the dividing bar on th left.*/
+        .challenges .challenge .challenge__left {
+            transform: scale(0.8);
+            margin-right: 0.1rem;
+            margin-left: -.25rem;
+        }
+        
+        /* Hides the text indicating "this is a straightforward challenge" and the "you can use a second chance" text. Does not hide the actual button for using a second chance, the second chance icon, or the number of relevant second chances you have.*/
+        .challenge__heading, .challenges .challenge-and-second-chance .second-chance span {
+            display: none;
+        }
+        
+        /* Centers the chance of success text with the relevant stat's image. */
+        .challenges .challenge .challenge__body .challenge__description {
+            margin-top: 0.5rem;
+        }
+        
+        /* Ensures that, if your challenge is not 100%, the text will pop a little, becoming more obvious at a glance, so people can know if something isn't 100% chance as fast as possible before they can potentially make a mistake. This replicates half of the behavior lost by removing the "this is a straightforward challenge" or equivalent.*/
+        .challenges .challenge .challenge__body:not(:has(.diff0)) .challenge__description {
+            font-weight: bolder;
+        }
+        
+        /* Makes sure that the second chance doesn't take much space, when it does appear.*/
+        .challenges .challenge-and-second-chance .second-chance {
+            margin-top: .2rem;
+            margin-bottom: .5rem;
+            flex:0 0;
+        }
+
+
+        /* These two apply vanilla challenge tier colors to the challenge success rate text, allowing you to more easily see, at a glance, without needing to actually check, if something is not 100%. Does not affect 100% success rate challenges. Drop shadows for the text are provided for easier readability. Dark Mode and Light Mode versions change the color of the drop shadow (and nothing else) to prevent text harshness with their respective styles.*/
+        
+        /* Use this version if you use the "Fallen London Dark Mode" style.*/
+        if (compact-challenge=="darkmode") {
+            .challenges .challenge .challenge__body:has(.diff1) .challenge__description {
+                color: #16742f;
+                text-shadow: -.5px -.5px 3px #000, .5px -.5px 3px #000, -.5px .5px 3px #000, .5px .5px 3px #000;
+            }
+
+            .challenges .challenge .challenge__body:has(.diff2) .challenge__description {
+                color: #006f99;
+                text-shadow: -.5px -.5px 3px #000, .5px -.5px 3px #000, -.5px .5px 3px #000, .5px .5px 3px #000;
+            }
+
+            .challenges .challenge .challenge__body:has(.diff3) .challenge__description {
+                color: #7f580a;
+                text-shadow: -.5px -.5px 3px #000, .5px -.5px 3px #000, -.5px .5px 3px #000, .5px .5px 3px #000;
+            }
+
+            .challenges .challenge .challenge__body:has(.diff4) .challenge__description {
+                color: #913408;
+                text-shadow: -.5px -.5px 3px #000, .5px -.5px 3px #000, -.5px .5px 3px #000, .5px .5px 3px #000;
+                filter: saturate(150%);
+            }
+
+            .challenges .challenge .challenge__body:has(.diff5) .challenge__description {
+                color: #82171a;
+                text-shadow: -.5px -.5px 3px #000, .5px -.5px 3px #000, -.5px .5px 3px #000, .5px .5px 3px #000;
+                filter: saturate(200%);
+            }
+
+            .challenges .challenge .challenge__body:has(.diff6) .challenge__description {
+                color: #792077;
+                text-shadow: -.5px -.5px 3px #000, .5px -.5px 3px #000, -.5px .5px 3px #000, .5px .5px 3px #000;
+            }
+        }
+        /* Use this version if you use the vanilla Fallen London colors.*/
+        if (compact-challenge=="lightmode") {
+            .challenges .challenge .challenge__body:has(.diff1) .challenge__description {
+                color: #16742f;
+                text-shadow: -.5px -.5px 3px #FFF, .5px -.5px 3px #FFF, -.5px .5px 3px #FFF, .5px .5px 3px #FFF;
+            }
+
+            .challenges .challenge .challenge__body:has(.diff2) .challenge__description {
+                color: #006f99;
+                text-shadow: -.5px -.5px 3px #FFF, .5px -.5px 3px #FFF, -.5px .5px 3px #FFF, .5px .5px 3px #FFF;
+            }
+
+            .challenges .challenge .challenge__body:has(.diff3) .challenge__description {
+                color: #7f580a;
+                text-shadow: -.5px -.5px 3px #FFF, .5px -.5px 3px #FFF, -.5px .5px 3px #FFF, .5px .5px 3px #FFF;
+            }
+
+            .challenges .challenge .challenge__body:has(.diff4) .challenge__description {
+                color: #913408;
+                text-shadow: -.5px -.5px 3px #FFF, .5px -.5px 3px #FFF, -.5px .5px 3px #FFF, .5px .5px 3px #FFF;
+            }
+
+            .challenges .challenge .challenge__body:has(.diff5) .challenge__description {
+                color: #82171a;
+                text-shadow: -.5px -.5px 3px #FFF, .5px -.5px 3px #FFF, -.5px .5px 3px #FFF, .5px .5px 3px #FFF;
+            }
+
+            .challenges .challenge .challenge__body:has(.diff6) .challenge__description {
+                color: #792077;
+                text-shadow: -.5px -.5px 3px #FFF, .5px -.5px 3px #FFF, -.5px .5px 3px #FFF, .5px .5px 3px #FFF;
+            }
         }
     }
 
@@ -285,7 +401,7 @@
     EXTENSION INTEGRATION: the ".agent-stat-wrapper" part is to cover for if you are using the compact sidebar from Small Mercies.*/
     if (remove-mw) {
         .col-secondary .sidebar-quality:has(img[src="//images.fallenlondon.com/icons/sidebarmakingwavessmall.png"]),
-        .col-secondary .agent-stat-wrapper:has(img[src="//images.fallenlondon.com/icons/sidebarmakingwavessmall.png"]){
+        .col-secondary .agent-stat-wrapper:has(img[src="//images.fallenlondon.com/icons/sidebarmakingwavessmall.png"]) {
             display: none;
         }
     }
@@ -298,12 +414,7 @@
         }
     }
 
-    /* TOGGLABLE -- Disables the messages such as "This is a Straightforward challenge." can reduce visual clarity for what is vs isn't a 100% chance check, but does save some vertical space.*/
-    if(no-diff) {
-        .challenge__heading {
-            display: none;
-        }
-    }
+
 
     /* TOGGLABLE -- Several tweaks to the layout of branches and storylets, generally making them take less vertical space and make better use of the space they have.*/
     if(small-plans-button) {
@@ -674,13 +785,13 @@
     .agent-header-row {
         margin-left: 0px;
     }
-    
+
     if(one-row-agents) {
-            /* Makes agent stats only have one row, instead of one row for the Highway stats and one row for Everything Else™.*/
-            .agent-stat-new-row {
-                grid-column: unset;
-            }
+        /* Makes agent stats only have one row, instead of one row for the Highway stats and one row for Everything Else™.*/
+        .agent-stat-new-row {
+            grid-column: unset;
         }
+    }
 
     if(doubled-agents) {
 
