@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Fallen London Compact UI
 @namespace      http://www.fallenlondon.com
-@version        2.5
+@version        2.5.1
 @description    A Fallen London userstyle with several options that compact the UI.
 @author         Sacchi Hikaru
 @preprocessor stylus
@@ -23,7 +23,8 @@
     "Disabled": "none",
     "Doubled": "double",
     "Tripled": "triple",
-    "Quadrupled": "quad"
+    "Quadrupled": "quad",
+    "Automatic": "auto"
 }
 
 @var checkbox widen-game "Widen Primary Column" 0
@@ -280,8 +281,8 @@
         .loading-image {
             width: 100% !important;
         }
-        
-        
+
+
         /* Doubled storylets/branches. */
         if(multi-slets=="double") {
             .media--branch,
@@ -292,7 +293,7 @@
                 margin-right: .25rem;
             }
         }
-        
+
         /* Tripled storylets/branches. */
         if(multi-slets=="triple") {
             .media--branch,
@@ -302,7 +303,7 @@
                 margin-left: .25rem;
                 margin-right: .25rem;
             }
-            
+
             /* If there are only two storylet/branches, defaults to doubled instead of tripled. */
             .tab-content__bordered-container:not(:has(.media--branch ~ .media--branch ~ .media--branch)) .media--branch,
             .tab-content__bordered-container:not(:has(.storylet ~ .storylet ~ .storylet)) .storylet,
@@ -310,8 +311,8 @@
                 width: calc(50% - 0.5rem);
             }
         }
-        
-        
+
+
         /* Quadrupled storylets/branches. */
         if(multi-slets=="quad") {
             .media--branch,
@@ -321,19 +322,82 @@
                 margin-left: .25rem;
                 margin-right: .25rem;
             }
-            
+
             /* If there are only two storylet/branches, defaults to doubled instead of quadrupled. */
             .tab-content__bordered-container:not(:has(.media--branch ~ .media--branch ~ .media--branch)) .media--branch,
             .tab-content__bordered-container:not(:has(.storylet ~ .storylet ~ .storylet)) .storylet,
             .modal--gate-storylet__content:not(:has(.media--branch ~ .media--branch ~ .media--branch)) .media--branch {
                 width: calc(50% - 0.5rem) !important;
             }
-            
+
             /* If there are specifically three storylet/branches, defaults to tripled instead of quadrupled. */
             .tab-content__bordered-container:not(:has(.media--branch ~ .media--branch ~ .media--branch ~ .media--branch)) .media--branch,
             .tab-content__bordered-container:not(:has(.storylet ~ .storylet ~ .storylet ~ .storylet)) .storylet,
             .modal--gate-storylet__content:not(:has(.media--branch ~ .media--branch ~ .media--branch ~ .media--branch)) .media--branch {
                 width: calc(33% - 0.5rem);
+            }
+        }
+
+        if(multi-slets=="auto") {
+            if(!widen-game) {
+                .media--branch,
+                .media.storylet,
+                .persistent {
+                    width: calc(50% - 0.5rem);
+                    margin-left: .25rem;
+                    margin-right: .25rem;
+                }
+            }
+
+            if(widen-game) {
+                @media (max-width: 1499px) {
+                    .media--branch,
+                    .media.storylet,
+                    .persistent {
+                        width: calc(50% - 0.5rem);
+                        margin-left: .25rem;
+                        margin-right: .25rem;
+                    }
+                }
+
+                @media (min-width:1500px) {
+                    .media--branch,
+                    .media.storylet,
+                    .persistent {
+                        width: calc(33% - 0.5rem);
+                        margin-left: .25rem;
+                        margin-right: .25rem;
+                    }
+                    .tab-content__bordered-container:not(:has(.media--branch ~ .media--branch ~ .media--branch)) .media--branch,
+                    .tab-content__bordered-container:not(:has(.storylet ~ .storylet ~ .storylet)) .storylet,
+                    .modal--gate-storylet__content:not(:has(.media--branch ~ .media--branch ~ .media--branch)) .media--branch {
+                        width: calc(50% - 0.5rem);
+                    }
+                }
+
+                @media (min-width:2000px) {
+                    .media--branch,
+                    .media.storylet,
+                    .persistent {
+                        width: calc(25% - 0.5rem);
+                        margin-left: .25rem;
+                        margin-right: .25rem;
+                    }
+
+                    /* If there are only two storylet/branches, defaults to doubled instead of quadrupled. */
+                    .tab-content__bordered-container:not(:has(.media--branch ~ .media--branch ~ .media--branch)) .media--branch,
+                    .tab-content__bordered-container:not(:has(.storylet ~ .storylet ~ .storylet)) .storylet,
+                    .modal--gate-storylet__content:not(:has(.media--branch ~ .media--branch ~ .media--branch)) .media--branch {
+                        width: calc(50% - 0.5rem) !important;
+                    }
+
+                    /* If there are specifically three storylet/branches, defaults to tripled instead of quadrupled. */
+                    .tab-content__bordered-container:not(:has(.media--branch ~ .media--branch ~ .media--branch ~ .media--branch)) .media--branch,
+                    .tab-content__bordered-container:not(:has(.storylet ~ .storylet ~ .storylet ~ .storylet)) .storylet,
+                    .modal--gate-storylet__content:not(:has(.media--branch ~ .media--branch ~ .media--branch ~ .media--branch)) .media--branch {
+                        width: calc(33% - 0.5rem);
+                    }
+                }
             }
         }
     }
@@ -687,11 +751,11 @@
             }
         }
     }
-    
+
     /* TOGGLABLE -- Removes the preview text from base storylets, which is often just the first sentence or so of the actual storylet text. Does not affect storylet branches, as those have unique text. Requested by Savato.*/
-    if(remove-preview){
+    if(remove-preview) {
         .storylet__body .storylet__title-and-description .storylet__description-container {
-            display:none;
+            display: none;
         }
     }
 }
