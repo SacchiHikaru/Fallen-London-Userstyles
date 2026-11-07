@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Fallen London Compact UI
 @namespace      http://www.fallenlondon.com
-@version        2.4
+@version        2.5
 @description    A Fallen London userstyle with several options that compact the UI.
 @author         Sacchi Hikaru
 @preprocessor stylus
@@ -19,18 +19,25 @@
     "For Dark Mode": "darkmode"
 }
 
-@var checkbox side-by-side-myself "Side-by-side Myself Qualities" 0
+@var select multi-slets "Multiple Storylets & Branches" {
+    "Disabled": "none",
+    "Doubled": "double",
+    "Tripled": "triple",
+    "Quadrupled": "quad"
+}
+
 @var checkbox widen-game "Widen Primary Column" 0
-@var checkbox doubled-slets "Doubled Storylet & Branches" 0
 @var checkbox remove-mw "Remove Making Waves" 0
-@var checkbox center-deck "Center Opportunity Deck (Requires Doubled Storylet/Branches)" 0
+@var checkbox center-deck "Center Opportunity Deck (Requires Multi Storylet/Branches)" 0
 @var checkbox small-plans-button "Small Plans/Journal Button" 0
-@var checkbox small-images "Small Storylet/Branch Images" 0
-@var checkbox SM-EPA-integrated "Small Mercies EPA Tracker Integrated" 0
-@var checkbox fl-timekeeper "FL Time Keeper Compatibility" 0
+@var checkbox small-images "Small Storylet/Branch Images & Buttons" 0
+@var checkbox remove-preview "Remove Storylet Preview Text" 0
+@var checkbox side-by-side-myself "Side-by-side Myself Qualities" 0
 @var checkbox doubled-agents "Doubled Agents" 0
 @var checkbox working-agents "Include Doubled Working Agents" 0
 @var checkbox one-row-agents "Single Row for Agent Stats" 0
+@var checkbox SM-EPA-integrated "Small Mercies EPA Tracker Integrated" 0
+@var checkbox fl-timekeeper "FL Time Keeper Compatibility" 0
 
 --- Options for the original Compact Wardrobe start here ---
 
@@ -232,24 +239,16 @@
         left: 21.5%;
     }
 
-    /* TOGGLABLE -- Doubles storylets and branches on the main gamespace, allowing them to show up side-by-side. This code was kindly provided by Platyn, who solved my months of occasional css research on doing this in about 5 minutes. Contains only incredibly minor tweaks to account for specific UI bugs.*/
-    if(doubled-slets) {
+    /* SELECTABLE -- Multiple storylets and branches on the main gamespace, allowing them to show up side-by-side. This code was kindly provided by Platyn, who solved my months of occasional css research on doing this in about 5 minutes. Contains only incredibly minor tweaks to account for specific UI bugs.*/
+    if(multi-slets !="none") {
         /* These two together do most of the magic, in allowing the storylets to be side-by-side and automatically change height based on whichever storylet is the taller one.*/
         /* The "not-has-aria-label" is specifically to prevent the halving of the Enhanced Exceptional Friendship menu, using the single most hacky thing possible. It should function.*/
         .tab-content__bordered-container:not(:has([aria-label="Freshly Added"])),
         .disclosure-children,
         .agent-report-branch-container,
-        .modal--gate-storylet__content div:has(.media--branch ~ .media--branch)
-        {
+        .modal--gate-storylet__content div:has(.media--branch ~ .media--branch) {
             display: flex;
             flex-wrap: wrap;
-        }
-        .media--branch,
-        .media.storylet,
-        .persistent {
-            width: calc(50% - 0.5rem);
-            margin-left: .25rem;
-            margin-right: .25rem
         }
 
         /* This one ensures several things, such as storylet and result text, the buttons and requirements, agent reports and assignments, the fifth city stories, sell dialogue, possessions tab (only when searching for some reason???), zee/roof travel storylets and fate stories are still the full size of the gamespace. Also fixes a bug when deleting entries from the journal.*/
@@ -269,59 +268,116 @@
         .tab-content__bordered-container .fate-card,
         .modal--gate-storylet__content,
         div:has(.branch.plans_separator),
-        .tab-content__bordered-container:not(:has(.media--branch ~ .media--branch)) .media--branch,
-        .tab-content__bordered-container:not(:has(.storylet ~ .storylet)) .storylet,
-        .modal--gate-storylet__content:not(:has(.media--branch ~ .media--branch)) .media--branch {
-            width: 100%;
+        #main .tab-content__bordered-container:not(:has(.media--branch ~ .media--branch)) .media--branch,
+        #main .tab-content__bordered-container:not(:has(.storylet ~ .storylet)) .storylet,
+        #main .modal--gate-storylet__content:not(:has(.media--branch ~ .media--branch)) .media--branch,
+        .modal-dialog__overlay .modal-dialog .modal__content {
+            width: 100% !important;
         }
 
         /* Places the Spinning Hat Loading Image back on the center of the screen. Fix graciously provided by Platyn*/
         div:has(>span>.loading-image),
         .loading-image {
-            width: 100%
+            width: 100% !important;
+        }
+        
+        
+        /* Doubled storylets/branches. */
+        if(multi-slets=="double") {
+            .media--branch,
+            .media.storylet,
+            .persistent {
+                width: calc(50% - 0.5rem);
+                margin-left: .25rem;
+                margin-right: .25rem;
+            }
+        }
+        
+        /* Tripled storylets/branches. */
+        if(multi-slets=="triple") {
+            .media--branch,
+            .media.storylet,
+            .persistent {
+                width: calc(33% - 0.5rem);
+                margin-left: .25rem;
+                margin-right: .25rem;
+            }
+            
+            /* If there are only two storylet/branches, defaults to doubled instead of tripled. */
+            .tab-content__bordered-container:not(:has(.media--branch ~ .media--branch ~ .media--branch)) .media--branch,
+            .tab-content__bordered-container:not(:has(.storylet ~ .storylet ~ .storylet)) .storylet,
+            .modal--gate-storylet__content:not(:has(.media--branch ~ .media--branch ~ .media--branch)) .media--branch {
+                width: calc(50% - 0.5rem);
+            }
+        }
+        
+        
+        /* Quadrupled storylets/branches. */
+        if(multi-slets=="quad") {
+            .media--branch,
+            .media.storylet,
+            .persistent {
+                width: calc(25% - 0.5rem);
+                margin-left: .25rem;
+                margin-right: .25rem;
+            }
+            
+            /* If there are only two storylet/branches, defaults to doubled instead of quadrupled. */
+            .tab-content__bordered-container:not(:has(.media--branch ~ .media--branch ~ .media--branch)) .media--branch,
+            .tab-content__bordered-container:not(:has(.storylet ~ .storylet ~ .storylet)) .storylet,
+            .modal--gate-storylet__content:not(:has(.media--branch ~ .media--branch ~ .media--branch)) .media--branch {
+                width: calc(50% - 0.5rem) !important;
+            }
+            
+            /* If there are specifically three storylet/branches, defaults to tripled instead of quadrupled. */
+            .tab-content__bordered-container:not(:has(.media--branch ~ .media--branch ~ .media--branch ~ .media--branch)) .media--branch,
+            .tab-content__bordered-container:not(:has(.storylet ~ .storylet ~ .storylet ~ .storylet)) .storylet,
+            .modal--gate-storylet__content:not(:has(.media--branch ~ .media--branch ~ .media--branch ~ .media--branch)) .media--branch {
+                width: calc(33% - 0.5rem);
+            }
         }
     }
-    
-        /* TOGGLABLE -- Compacts the Challenge Displays to take less vertical space, predominantly by removing potentially redundant information. */
+
+    /* TOGGLABLE -- Compacts the Challenge Displays to take less vertical space, predominantly by removing potentially redundant information. */
     if(compact-challenge !="none") {
-    
+
         /* Reduces the space between the dividing bar between the choice text and the challenge itself.*/
         .challenges {
             padding-top: .1rem;
         }
-        
+
         /* Makes challenge images smaller, and reduces the space between them, the text to its right, and aligns them with the dividing bar on th left.*/
         .challenges .challenge .challenge__left {
             transform: scale(0.8);
             margin-right: 0.1rem;
             margin-left: -.25rem;
         }
-        
+
         /* Hides the text indicating "this is a straightforward challenge" and the "you can use a second chance" text. Does not hide the actual button for using a second chance, the second chance icon, or the number of relevant second chances you have.*/
-        .challenge__heading, .challenges .challenge-and-second-chance .second-chance span {
+        .challenge__heading,
+        .challenges .challenge-and-second-chance .second-chance span {
             display: none;
         }
-        
+
         /* Centers the chance of success text with the relevant stat's image. */
         .challenges .challenge .challenge__body .challenge__description {
             margin-top: 0.5rem;
         }
-        
+
         /* Ensures that, if your challenge is not 100%, the text will pop a little, becoming more obvious at a glance, so people can know if something isn't 100% chance as fast as possible before they can potentially make a mistake. This replicates half of the behavior lost by removing the "this is a straightforward challenge" or equivalent.*/
         .challenges .challenge .challenge__body:not(:has(.diff0)) .challenge__description {
             font-weight: bolder;
         }
-        
+
         /* Makes sure that the second chance doesn't take much space, when it does appear.*/
         .challenges .challenge-and-second-chance .second-chance {
             margin-top: .2rem;
             margin-bottom: .5rem;
-            flex:0 0;
+            flex: 0 0;
         }
 
 
         /* These two apply vanilla challenge tier colors to the challenge success rate text, allowing you to more easily see, at a glance, without needing to actually check, if something is not 100%. Does not affect 100% success rate challenges. Drop shadows for the text are provided for easier readability. Dark Mode and Light Mode versions change the color of the drop shadow (and nothing else) to prevent text harshness with their respective styles.*/
-        
         /* Use this version if you use the "Fallen London Dark Mode" style.*/
         if (compact-challenge=="darkmode") {
             .challenges .challenge .challenge__body:has(.diff1) .challenge__description {
@@ -393,7 +449,7 @@
     /* TOGGLABLE -- Makes the primary game space as large as it can be without digging into the sidebars. This prevents the empty space to the left and right of the sidebars. */
     if(widen-game) {
         .col-primary {
-            max-width: 2000px;
+            max-width: 3000px;
         }
     }
 
@@ -424,28 +480,61 @@
             transform: scale(0.76);
             margin-left: -3px;
             margin-right: -6px;
-            margin-top: -8px;
+            margin-top: -11px;
         }
 
         .storylet-root__frequency {
             transform: scale(0.76);
-            margin-right: -8px;
-            margin-top: -4px;
+            margin-right: -17px;
+            margin-top: -10px;
+            margin-left: 0px;
         }
+
+        /*.storylet-root__frequency:has(.buttonlet-frequency) {
+            margin-right: -23px;
+        }*/
     }
 
 
-    /* TOGGLABLE -- Makes the images on storylets and branches smaller to save on some vertical space.*/
+    /* TOGGLABLE -- Makes the images on storylets, branches, requirements and the go button smaller to save on some vertical space.*/
     if(small-images) {
 
-        /* This is the part that makes them smaller, while also shuffling them around to accommodate the new size.*/
-        .storylet__left,
-        .branch__left {
-            transform: scale(0.8);
-            margin-left: -10px;
-            margin-right: 0;
+        /* This is the part that makes the image smaller, while also shuffling them around to accommodate the new size.*/
+        .branch__left,
+        .storylet__left {
+            transform: scale(0.8, 1);
             padding-right: 0px;
-            margin-top: -10px;
+            margin-left: -0.5rem;
+            margin-top: -0.25rem;
+            margin-right: 0rem;
+            margin-bottom: -10px;
+        }
+
+
+        /* Changes the spacing between the storylet/branch title and the text so it's more aligned with vanilla. The 0.04rem is necessary to make sure the text interacts correctly with the small-buttons option. EXTENSION INTEGRATION -- Also makes sure it doesn't affect fl timekeeper.*/
+        .branch__body:not(:has(#tth_info_display)) .branch__title,
+        .storylet__body:not(:has(#tth_info_display)) .storylet__heading {
+            margin-top: -0.25rem;
+            margin-bottom: 0.04rem;
+        }
+
+        /* Makes the card image itself smaller vertically. This is done separately to keep consistency with placement.*/
+        .small-card {
+            transform: scale(1, 0.8);
+            margin-top: -8px;
+        }
+
+        /* Makes the card border smaller to be more proportional to the changes. */
+        .small-card__border {
+            padding: 5px 5px 4px;
+        }
+
+        /* Makes the action button and the quality requirements smaller as well. EXTENSION INTEGRATION -- Also affects "playing favorites" extension button.*/
+        .button--go,
+        .fave_toggle_button,
+        .quality-requirement {
+            transform: scale(0.8);
+            margin: -4px;
         }
     }
 
@@ -598,6 +687,13 @@
             }
         }
     }
+    
+    /* TOGGLABLE -- Removes the preview text from base storylets, which is often just the first sentence or so of the actual storylet text. Does not affect storylet branches, as those have unique text. Requested by Savato.*/
+    if(remove-preview){
+        .storylet__body .storylet__title-and-description .storylet__description-container {
+            display:none;
+        }
+    }
 }
 @-moz-document domain("www.fallenlondon.com") {
 
@@ -668,6 +764,11 @@
         padding-right: 0rem;
         padding-left: 1.083%;
         width: 81.083%;
+    }
+
+    /* This one fixes a bug caused by the above, where inputting a search query that has no results leads to the myself tab being smaller. */
+    .tab-content__bordered-container div:has(.stack-content--3-of-4 .input--item-search) {
+        width: 100%;
     }
 
     /* TOGGLABLE -- Makes the myself tab qualities side-by-side. Defaults to a two side-by-side, but changes to three if you have 1900px or more of horizontal resolution.*/
@@ -784,6 +885,34 @@
     .agent-body-row,
     .agent-header-row {
         margin-left: 0px;
+    }
+
+    /* Replaces the "Abandon Plot" button with just "Abandon" to make it smaller.*/
+    .agent-unassign-button {
+        text-indent: -9999px;
+        line-height: 0px;
+    }
+
+    .agent-unassign-button:after {
+        content: "Abandon";
+        text-indent: initial;
+        line-height: initial;
+        display: block;
+    }
+
+    /* Makes the Agent Inventory a little bit tighter for working agents.*/
+    .agent-inventory {
+        grid-template-columns: repeat(auto-fill, 30px);
+    }
+
+    /* Reduces the amount of empty space between the working agent inventory and the button.*/
+    .working-agent-footer-row {
+        grid-template-columns: 1fr 170px;
+    }
+
+    /* Reduces some empty space at the top of working Agents.*/
+    .plot__result .plot__body {
+        margin-top: 0px;
     }
 
     if(one-row-agents) {
