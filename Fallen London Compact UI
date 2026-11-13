@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Fallen London Compact UI
 @namespace      http://www.fallenlondon.com
-@version        2.5.1
+@version        2.5.2
 @description    A Fallen London userstyle with several options that compact the UI.
 @author         Sacchi Hikaru
 @preprocessor stylus
@@ -252,7 +252,7 @@
             flex-wrap: wrap;
         }
 
-        /* This one ensures several things, such as storylet and result text, the buttons and requirements, agent reports and assignments, the fifth city stories, sell dialogue, possessions tab (only when searching for some reason???), zee/roof travel storylets and fate stories are still the full size of the gamespace. Also fixes a bug when deleting entries from the journal.*/
+        /* This one ensures several things, such as storylet and result text, the buttons and requirements, agent reports and assignments, the fifth city stories, sell dialogue, possessions tab (only when searching for some reason???), zee/roof travel storylets and fate stories are still the full size of the gamespace. Also fixes a bug when deleting entries from the journal. EXTENSION INTEGRATION: Attempts to account for the fact that Fallen London Timekeeper uses the storylet class by creating an additional rule with #tth_info_display. */
         .buttons,
         div:has(>.media--root),
         .media--root,
@@ -271,6 +271,7 @@
         div:has(.branch.plans_separator),
         #main .tab-content__bordered-container:not(:has(.media--branch ~ .media--branch)) .media--branch,
         #main .tab-content__bordered-container:not(:has(.storylet ~ .storylet)) .storylet,
+        #main:has(#tth_info_display) .tab-content__bordered-container:not(:has(.storylet ~ .storylet ~ .storylet)) .storylet,
         #main .modal--gate-storylet__content:not(:has(.media--branch ~ .media--branch)) .media--branch,
         .modal-dialog__overlay .modal-dialog .modal__content {
             width: 100% !important;
@@ -304,10 +305,11 @@
                 margin-right: .25rem;
             }
 
-            /* If there are only two storylet/branches, defaults to doubled instead of tripled. */
+            /* If there are only two storylet/branches, defaults to doubled instead of tripled. EXTENSION INTEGRATION: Attempts to account for the fact that Fallen London Timekeeper uses the storylet class by creating an additional rule with #tth_info_display. */
             .tab-content__bordered-container:not(:has(.media--branch ~ .media--branch ~ .media--branch)) .media--branch,
             .tab-content__bordered-container:not(:has(.storylet ~ .storylet ~ .storylet)) .storylet,
-            .modal--gate-storylet__content:not(:has(.media--branch ~ .media--branch ~ .media--branch)) .media--branch {
+            .modal--gate-storylet__content:not(:has(.media--branch ~ .media--branch ~ .media--branch)) .media--branch,
+            #main:has(#tth_info_display) .tab-content__bordered-container:not(:has(.storylet ~ .storylet ~ .storylet ~ .storylet)) .storylet{
                 width: calc(50% - 0.5rem);
             }
         }
@@ -323,22 +325,25 @@
                 margin-right: .25rem;
             }
 
-            /* If there are only two storylet/branches, defaults to doubled instead of quadrupled. */
+            /* If there are only two storylet/branches, defaults to doubled instead of quadrupled. EXTENSION INTEGRATION: Attempts to account for the fact that Fallen London Timekeeper uses the storylet class by creating an additional rule with #tth_info_display. */
             .tab-content__bordered-container:not(:has(.media--branch ~ .media--branch ~ .media--branch)) .media--branch,
             .tab-content__bordered-container:not(:has(.storylet ~ .storylet ~ .storylet)) .storylet,
-            .modal--gate-storylet__content:not(:has(.media--branch ~ .media--branch ~ .media--branch)) .media--branch {
+            .modal--gate-storylet__content:not(:has(.media--branch ~ .media--branch ~ .media--branch)) .media--branch,
+            #main:has(#tth_info_display) .tab-content__bordered-container:not(:has(.storylet ~ .storylet ~ .storylet ~ .storylet)) .storylet{
                 width: calc(50% - 0.5rem) !important;
             }
 
-            /* If there are specifically three storylet/branches, defaults to tripled instead of quadrupled. */
+            /* If there are specifically three storylet/branches, defaults to tripled instead of quadrupled. EXTENSION INTEGRATION: Attempts to account for the fact that Fallen London Timekeeper uses the storylet class by creating an additional rule with #tth_info_display. */
             .tab-content__bordered-container:not(:has(.media--branch ~ .media--branch ~ .media--branch ~ .media--branch)) .media--branch,
             .tab-content__bordered-container:not(:has(.storylet ~ .storylet ~ .storylet ~ .storylet)) .storylet,
-            .modal--gate-storylet__content:not(:has(.media--branch ~ .media--branch ~ .media--branch ~ .media--branch)) .media--branch {
+            .modal--gate-storylet__content:not(:has(.media--branch ~ .media--branch ~ .media--branch ~ .media--branch)) .media--branch,
+            #main:has(#tth_info_display) .tab-content__bordered-container:not(:has(.storylet ~ .storylet ~ .storylet ~ .storylet ~ .storylet)) .storylet{
                 width: calc(33% - 0.5rem);
             }
         }
 
         if(multi-slets=="auto") {
+        /* If you don't have the "widen primary column" option enabled, then there is not enough space in the primary column for anything except the doubled option, so it defaults to the doubled option.*/
             if(!widen-game) {
                 .media--branch,
                 .media.storylet,
@@ -350,6 +355,7 @@
             }
 
             if(widen-game) {
+                /* If you do have "widen primary column" enabled but your monitor's horizon resolution doesn't reach 1500 (ie: you're using a 720p monitor), then it defaults to doubled behavior. */
                 @media (max-width: 1499px) {
                     .media--branch,
                     .media.storylet,
@@ -359,7 +365,8 @@
                         margin-right: .25rem;
                     }
                 }
-
+                
+                /* If you have "widen primary column" enabled *and* you have a monitor resolution above 1500 (ie: your monitor is at least some kind of 1080p), then it changes to the tripled behavior. */
                 @media (min-width:1500px) {
                     .media--branch,
                     .media.storylet,
@@ -368,13 +375,17 @@
                         margin-left: .25rem;
                         margin-right: .25rem;
                     }
+                    
+                    /* If there are only two storylet/branches, defaults to doubled instead of tripled. EXTENSION INTEGRATION: Attempts to account for the fact that Fallen London Timekeeper uses the storylet class by creating an additional rule with #tth_info_display. */
                     .tab-content__bordered-container:not(:has(.media--branch ~ .media--branch ~ .media--branch)) .media--branch,
                     .tab-content__bordered-container:not(:has(.storylet ~ .storylet ~ .storylet)) .storylet,
-                    .modal--gate-storylet__content:not(:has(.media--branch ~ .media--branch ~ .media--branch)) .media--branch {
+                    .modal--gate-storylet__content:not(:has(.media--branch ~ .media--branch ~ .media--branch)) .media--branch,
+                    #main:has(#tth_info_display) .tab-content__bordered-container:not(:has(.storylet ~ .storylet ~ .storylet ~ .storylet)) .storylet{
                         width: calc(50% - 0.5rem);
                     }
                 }
-
+                
+                /* Finally, if you have "widen primary column" enabled and your monitor's resolution is above 2000 (ie: you're running something that's 1440p or higher), then it changes to quadrupled behavior.*/
                 @media (min-width:2000px) {
                     .media--branch,
                     .media.storylet,
@@ -384,17 +395,19 @@
                         margin-right: .25rem;
                     }
 
-                    /* If there are only two storylet/branches, defaults to doubled instead of quadrupled. */
+                    /* If there are only two storylet/branches, defaults to doubled instead of quadrupled. EXTENSION INTEGRATION: Attempts to account for the fact that Fallen London Timekeeper uses the storylet class by creating an additional rule with #tth_info_display. */
                     .tab-content__bordered-container:not(:has(.media--branch ~ .media--branch ~ .media--branch)) .media--branch,
                     .tab-content__bordered-container:not(:has(.storylet ~ .storylet ~ .storylet)) .storylet,
-                    .modal--gate-storylet__content:not(:has(.media--branch ~ .media--branch ~ .media--branch)) .media--branch {
+                    .modal--gate-storylet__content:not(:has(.media--branch ~ .media--branch ~ .media--branch)) .media--branch,
+                    #main:has(#tth_info_display) .tab-content__bordered-container:not(:has(.storylet ~ .storylet ~ .storylet ~ .storylet)) .storylet{
                         width: calc(50% - 0.5rem) !important;
                     }
 
-                    /* If there are specifically three storylet/branches, defaults to tripled instead of quadrupled. */
+                    /* If there are specifically three storylet/branches, defaults to tripled instead of quadrupled.  EXTENSION INTEGRATION: Attempts to account for the fact that Fallen London Timekeeper uses the storylet class by creating an additional rule with #tth_info_display. */
                     .tab-content__bordered-container:not(:has(.media--branch ~ .media--branch ~ .media--branch ~ .media--branch)) .media--branch,
                     .tab-content__bordered-container:not(:has(.storylet ~ .storylet ~ .storylet ~ .storylet)) .storylet,
-                    .modal--gate-storylet__content:not(:has(.media--branch ~ .media--branch ~ .media--branch ~ .media--branch)) .media--branch {
+                    .modal--gate-storylet__content:not(:has(.media--branch ~ .media--branch ~ .media--branch ~ .media--branch)) .media--branch,
+                    #main:has(#tth_info_display) .tab-content__bordered-container:not(:has(.storylet ~ .storylet ~ .storylet ~ .storylet ~ .storylet)) .storylet{
                         width: calc(33% - 0.5rem);
                     }
                 }
@@ -515,6 +528,11 @@
         .col-primary {
             max-width: 3000px;
         }
+        
+        /* Makes the list of Exceptional Friendship benefits take up the whole of the new size of the column, instead of a fixed amount of space.*/
+        .ef-benefits {
+            width: 100%;
+        }
     }
 
     /* TOGGLABLE -- Hides Making Waves from the sidebar entirely, for those of us who are utterly done with Notability grinding and do not want to think about Making Waves anymore. This is option exists entirely out of spite. 
@@ -553,10 +571,10 @@
             margin-top: -10px;
             margin-left: 0px;
         }
-
-        /*.storylet-root__frequency:has(.buttonlet-frequency) {
-            margin-right: -23px;
-        }*/
+        
+        .buttonlet-container:not(:has(~ .buttonlet-container)) .buttonlet-edit {
+            margin-right: 10px;
+        }
     }
 
 
@@ -583,28 +601,47 @@
         }
 
         /* Makes the card image itself smaller vertically. This is done separately to keep consistency with placement.*/
-        .small-card {
+        .storylet__left .small-card,
+        .branch__left .small-card {
             transform: scale(1, 0.8);
             margin-top: -8px;
         }
 
         /* Makes the card border smaller to be more proportional to the changes. */
-        .small-card__border {
+        .storylet__left .small-card__border {
             padding: 5px 5px 4px;
         }
 
         /* Makes the action button and the quality requirements smaller as well. EXTENSION INTEGRATION -- Also affects "playing favorites" extension button.*/
-        .button--go,
-        .fave_toggle_button,
-        .quality-requirement {
+        .persistent .button--go,
+        .persistent .fave_toggle_button,
+        .persistent .quality-requirement,
+        .storylet .button--go,
+        .storylet .fave_toggle_button,
+        .storylet .quality-requirement,
+        .media--branch .button--go,
+        .media--branch .fave_toggle_button,
+        .media--branch .quality-requirement{
             transform: scale(0.8);
             margin: -4px;
+        }
+        
+        /* These next two are specifically for handling the button versions for when you are out of actions and an Enhanced Exceptional Friend. EXTENSION INTEGRATION -- Accounts for Playing Favorites.*/
+        .media--branch.media--locked:has(.button--disabled ~ .button--ef) .button--disabled:first-of-type,
+        .media--branch.media--locked:has(.button--disabled ~ .button--secondary) .button--disabled:first-of-type{
+            margin-right: -1.5rem;
+        }
+        
+        .media--branch .storylet__buttons .button--ef,
+        .media--branch .storylet__buttons .button--secondary{
+            margin-left: -.5rem
+            margin-right: -1.5rem;
         }
     }
 
     /* EXTENSION INTEGRATION -- Ensures that other changes in this stylesheet don't conflict with the FL Time Keeper Extension. TURNING THEM ON IF YOU DO NOT USE THE EXTENSION MIGHT CAUSE ISSUES.*/
     if(fl-timekeeper) {
-        .cards + .storylet_favourite {
+        .cards + .storylet_favourite{
             width: 100% !important;
         }
 
@@ -837,6 +874,7 @@
 
     /* TOGGLABLE -- Makes the myself tab qualities side-by-side. Defaults to a two side-by-side, but changes to three if you have 1900px or more of horizontal resolution.*/
     if(side-by-side-myself) {
+        /* These two do most of the magic, making myself qualities flex containers and then forcing them to wrap. Then making sure they only take the necessary amount of space.*/
         .quality-group ul {
             display: flex;
             flex-wrap: wrap;
@@ -847,15 +885,18 @@
             padding-left: .2rem;
             padding-right: .2rem;
         }
-
+        
+        /* Makes the text of the qualities in the myself tab closer to their icons.*/
         .quality-item .quality-item__icon {
             margin-right: .4rem;
         }
-
-        .quality-item__description .descriptive {
+        
+        /* Removes descriptive text of qualities in myself tab, and the extra linebreak that shows up if you have the Quality Lantern extension.*/
+        .quality-item__description .descriptive, .quality-item__description .descriptive ~ br {
             display: none;
         }
-
+        
+        /* If your monitor is 1080p, defaults to three qualities side-by-side, instead of two.*/
         @media (min-width: 1900px) {
             .quality-group ul li {
                 width: calc(33% - .4rem);
